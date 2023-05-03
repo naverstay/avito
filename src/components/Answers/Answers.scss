@@ -1,0 +1,10 @@
+@import '../../utils.scss';
+
+.answers {
+  margin: 100px 0 90px;
+}
+
+.answers__title {
+  margin-bottom: 60px;
+  @extend %title;
+}

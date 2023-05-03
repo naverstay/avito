@@ -1,0 +1,42 @@
+@import './assets/fonts/fonts.css';
+@import './utils.scss';
+
+body {
+  margin: 0;
+  font-family: SF;
+  font-weight: 400;
+  color: $black;
+  background-color: #f9f9f9;
+}
+
+h1,h2,h3,p {
+  margin: 0;
+  box-sizing: border-box;
+}
+
+div, header, section, img {
+  box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
+  font-family: inherit;
+  color: inherit;
+  box-sizing: border-box;
+}
+
+button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  color: inherit;
+  box-sizing: border-box;
+  font-size: inherit;
+}
+
+[class*="__inner"] {
+  margin: 0 auto;
+  width: 100%;
+  max-width: 1170px;
+}

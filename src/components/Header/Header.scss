@@ -1,0 +1,33 @@
+.header {
+  background-color: #fff;
+}
+
+.header__inner {
+  display: flex;
+  align-items: center;
+  column-gap: 44px;
+  height: 80px;
+}
+
+.header__logo {
+  margin-right: 20px;
+}
+
+.header__user {
+  display: flex;
+  align-items: center;
+  column-gap: 15px;
+
+  &::after {
+    content: '';
+    width: 30px;
+    height: 30px;
+    background: center/contain url(../../assets/images/user.svg) no-repeat;
+  }
+}
+
+.header__auth-container {
+  margin-left: auto;
+  display: flex;
+  column-gap: 30px;
+}

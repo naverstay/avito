@@ -1,0 +1,23 @@
+@import '../../../utils.scss';
+
+.button {
+  border-radius: 10px;
+  border: 2px solid $yellow;
+  text-align: center;
+  padding: 0 50px;
+
+  background-color: $yellow;
+  height: 60px;
+
+  &.outlined {
+    background-color: #fff;
+  }
+
+  &.small {
+    height: 46px;
+  }
+
+  &.wide {
+    width: 100%;
+  }
+}
