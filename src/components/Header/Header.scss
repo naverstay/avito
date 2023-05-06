@@ -31,3 +31,10 @@
   display: flex;
   column-gap: 30px;
 }
+
+.header__link {
+  transition: all .5s;
+  &:hover {
+    transform: scale(1.05);
+  }
+}

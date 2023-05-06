@@ -1,7 +1,7 @@
 import { createContext, useState } from 'react';
 import './App.scss';
 import Header from './components/Header/Header';
-import Main from './pages/Main';
+import Main from './pages/Main/Main';
 import Services from './pages/Services';
 import Projects from './pages/Projects';
 import Answers from './components/Answers/Answers';
