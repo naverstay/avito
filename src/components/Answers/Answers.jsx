@@ -1,5 +1,5 @@
-import Accordion from "../UI/Accordion/Accordion";
-import Plate from "../UI/Plate/Plate";
+import Accordion from 'components/UI/Accordion/Accordion';
+import Plate from 'components/UI/Plate/Plate';
 import './Answers.scss';
 
 export default function Answers() {
@@ -31,27 +31,31 @@ export default function Answers() {
       title: 'Другие предложения по кредитным картам',
       text: 'UPTOUP - это платформа, позволяющая быстро и просто повысить отдачу от ваших рекламных объявлений. Пользуйтесь платформой, чтобы оптимизировать затраты на рекламу, всегда опережает своих конкурентов и получать больше заявок с Авито',
     },
-  ]
+  ];
 
   const plateStyle = {
     padding: '30px 60px 60px',
-  }
+  };
   const plateStyle2 = {
     padding: '30px 60px',
     marginTop: '60px',
-  }
+  };
 
   return (
-    <section className="answers">
+    <section className="answers" id="answers">
       <div className="answers__inner">
         <h2 className="answers__title">Ответы на частые вопросы</h2>
 
         <Plate style={plateStyle}>
-          {questions.map((i, ind) => <Accordion title={i.title} text={i.text} key={ind} />)}
+          {questions.map((i, ind) => (
+            <Accordion title={i.title} text={i.text} key={ind} />
+          ))}
         </Plate>
 
         <Plate style={plateStyle2}>
-          {questions2.map((i, ind) => <Accordion title={i.title} text={i.text} key={ind} />)}
+          {questions2.map((i, ind) => (
+            <Accordion title={i.title} text={i.text} key={ind} />
+          ))}
         </Plate>
       </div>
     </section>

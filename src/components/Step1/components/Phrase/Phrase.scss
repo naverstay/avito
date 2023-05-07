@@ -1,0 +1,24 @@
+@import 'src/utils';
+
+.formstep__phrase {
+  margin-top: 30px;
+}
+
+.formstep__phrase-container {
+  display: flex;
+  column-gap: 10px;
+}
+
+.formstep__phrase-button {
+  flex-shrink: 0;
+  width: 54px;
+  height: 54px;
+  background: center/20px $yellow url(~assets/images/addbutton.svg) no-repeat;
+  border-radius: 10px;
+}
+
+.formstep__phrase-tags {
+  display: flex;
+  flex-wrap: wrap;
+  grid-gap: 15px;
+}

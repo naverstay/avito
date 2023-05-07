@@ -1,0 +1,6 @@
+@import 'src/utils';
+
+.projects__title {
+  margin: 100px 0 60px;
+  @extend %title;
+}

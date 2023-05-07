@@ -1,11 +1,11 @@
-@import '../../../utils.scss';
+@import 'src/utils';
 
 .accordion {
   cursor: pointer;
   overflow: hidden;
 
   &:not(:only-of-type) {
-    border-bottom: 1px solid #D7E2E4;
+    border-bottom: 1px solid #d7e2e4;
   }
 }
 
@@ -21,8 +21,8 @@
     content: '';
     width: 20px;
     height: 8px;
-    background: center/contain url('../../../assets/images/accordion.svg') no-repeat;
-    transition: all .5s;
+    background: center/contain url('~assets/images/accordion.svg') no-repeat;
+    transition: all 0.5s;
   }
 }
 
@@ -30,7 +30,7 @@
   @extend %text;
   height: 0;
   box-sizing: content-box;
-  transition: all .5s;
+  transition: all 0.5s;
 }
 
 // Анимация

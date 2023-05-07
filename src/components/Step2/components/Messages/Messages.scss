@@ -1,0 +1,33 @@
+@import "src/utils";
+
+.messages__radiobuttons {
+  margin-top: 23px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 1em;
+}
+
+.messages__radio {
+  display: flex;
+  align-items: center;
+  column-gap: 12px;
+
+  &::before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: transparent;
+    display: block;
+    border: 3px solid #fff;
+    box-shadow: 0 0 0 1px #9e9e9e;
+  }
+
+  &:has(input:checked)::before {
+    background-color: $yellow;
+  }
+
+  & input {
+    display: none;
+  }
+}

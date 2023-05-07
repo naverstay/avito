@@ -1,6 +1,6 @@
 import './Sound.scss';
-import Plate from '../UI/Plate/Plate';
-import soundtrack from '../../assets/sounds/up.mp3';
+import Plate from 'components/UI/Plate/Plate';
+import soundtrack from 'assets/sounds/up.mp3';
 import { useEffect, useState } from 'react';
 
 export default function Sound() {
@@ -49,10 +49,18 @@ export default function Sound() {
       <Plate style={plateStyle}>
         <div className="sound__track">
           <button className="sound__button" onClick={handler}></button>
-          <div className={"sound__wave " + (isPlay ? "_active" : "")}>{new Array(19).fill().map((i, ind) => <div key={ind}></div>)}</div>
+          <div className={'sound__wave ' + (isPlay ? '_active' : '')}>
+            {new Array(19).fill().map((i, ind) => (
+              <div key={ind}></div>
+            ))}
+          </div>
           <p className="sound__timing">0:{soundCountDown}</p>
         </div>
-        <p className="sound__about">Рассказываем, как наши 72 обученных автоматических алгоритма и 41000 исполнителей с России и СНГ влияют на социальную активность и объявления на Авито</p>
+        <p className="sound__about">
+          Рассказываем, как наши 72 обученных автоматических алгоритма и 41000
+          исполнителей с России и СНГ влияют на социальную активность и
+          объявления на Авито
+        </p>
       </Plate>
       <div className="sound__circle _small"></div>
     </div>

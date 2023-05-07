@@ -10,19 +10,27 @@ export default function Accordion(props) {
   }
 
   const ref = useRef();
-  const [height, setHeight] = useState();
+  const [textStyle, setTextStyle] = useState();
   useEffect(() => {
-    setHeight(ref.current.scrollHeight);
+    setTextStyle({
+      paddingBottom: '30px',
+      height: ref.current.scrollHeight,
+    });
   }, []);
-  const textStyle = {
-    paddingBottom: '30px',
-    height
-  }
 
   return (
-    <div className={"accordion " + (isActive ? '_active' : '')} onClick={handler}>
+    <div
+      className={'accordion ' + (isActive ? '_active' : '')}
+      onClick={handler}
+    >
       <p className="accordion__title">{title}</p>
-      <p ref={ref} className="accordion__text" style={isActive ? textStyle : {}}>{text}</p>
+      <p
+        ref={ref}
+        className="accordion__text"
+        style={isActive ? textStyle : {}}
+      >
+        {text}
+      </p>
     </div>
   );
 }
