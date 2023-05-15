@@ -1,3 +1,4 @@
+import MainStore from 'stores/MainStore';
 import './TotalPrice.scss';
 
 export default function TotalPrice({ mode = "center" }) {
@@ -8,10 +9,10 @@ export default function TotalPrice({ mode = "center" }) {
         <p className="totalprice__text">С учетом выбранных параметров и дополнительных возможностей</p>
       </div>
       <p className="totalprice__price">
-        <span>4900</span>
+        <span>{MainStore.calculations.totalPrice}</span>
         <span> ₽</span>
         <span> ≈ </span>
-        <span>9</span>
+        <span>{MainStore.calculations.daysQuantity}</span>
         <span> дней</span>
       </p>
     </div>

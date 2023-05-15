@@ -1,42 +1,49 @@
+import { useEffect, useRef, useState } from 'react';
 import './InteractiveMB.scss';
 
-export default function InteractiveMB({ data }) {
-  function handler(e) {
-    const tempValue = e.target.value;
-    const progress =
-      ((tempValue - e.target.min) / (e.target.max - e.target.min)) * 100;
+export default function InteractiveMB(props) {
 
-    e.target.style.background = `linear-gradient(to right, #fed400 ${progress}%, #fff ${progress}%)`;
+  const progressBar = useRef();
+
+  function handler() {
+    props.handler(progressBar.current.value);
+    const progress = ((props.value - (props.minBar || props.min)) / ((props.maxBar || props.max) - (props.minBar || props.min))) * 100;
+    progressBar.current.style.background = `linear-gradient(to right, #fed400 ${progress}%, #fff ${progress}%)`;
   }
+
+  useEffect(() => {
+    handler();
+  }, [props])
 
   return (
     <div className="interactiveMB">
       <div className="interactiveMB__title-container">
-        <p className="interactiveMB__title">{data.title}</p>
+        <p className="interactiveMB__title">{props.title}</p>
         <p className="interactiveMB__digit">
-          <span>700</span>
-          <span> {data.firstTextCurrency}</span>
+          <span>{props.price}</span>
+          <span> {props.firstTextCurrency}</span>
           <span> ≈ </span>
-          <span>31</span>
-          <span> {data.secondTextCurrency}</span>
+          <span>{props.pieces}</span>
+          <span> {props.secondTextCurrency}</span>
         </p>
       </div>
       <div className="interactiveMB__range">
         <input
+          ref={progressBar}
           type="range"
           onInput={handler}
-          min={data.min}
-          max={data.max}
-          defaultValue={0}
+          min={props.minBar || props.min}
+          max={props.maxBar || props.max}
+          value={props.value}
         />
         <div className="interactiveMB__range-digits">
           <p className="interactiveMB__range-digit">
-            <span>{data.min}</span>
-            <span> {data.currency && data.currency}</span>
+            <span>{props.min}</span>
+            <span> {props.currency && props.currency}</span>
           </p>
           <p className="interactiveMB__range-digit">
-            <span>{data.max}</span>
-            <span> {data.currency && data.currency}</span>
+            <span>{props.max}</span>
+            <span> {props.currency && props.currency}</span>
           </p>
         </div>
       </div>

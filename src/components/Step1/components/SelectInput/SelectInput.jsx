@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import './SelectInput.scss';
 import SelectTag from '../SelectTag/SelectTag';
+import MainStore from 'stores/MainStore';
 
 export default function SelectInput() {
   // Категории
@@ -56,22 +57,32 @@ export default function SelectInput() {
   ]);
 
   const [isActive, setIsActive] = useState(false);
+
   function selecthandler(e) {
     if (e.target.className.includes('formstep__select-title')) {
       setIsActive(!isActive);
     } else if (e.target.className.includes('formstep__select-item')) {
-      const clone = structuredClone(categories);
-      const changedObject = clone.find((i) => i.title === e.target.textContent);
-      changedObject.isActive = !changedObject.isActive;
-      setCategories(clone);
+      if (!MainStore.category) {
+        MainStore.setCategory(e.target.textContent);
+        const clone = structuredClone(categories);
+        const changedObject = clone.find(
+          (i) => i.title === e.target.textContent
+        );
+        changedObject.isActive = !changedObject.isActive;
+        setCategories(clone);
+        setIsActive(!isActive);
+      }
     } else if (e.target.className.includes('close')) {
+      MainStore.setCategory('');
       const target = e.target.closest('.select__tag');
       const clone = structuredClone(categories);
       const changedObject = clone.find((i) => i.title === target.textContent);
       changedObject.isActive = false;
       setCategories(clone);
+      setIsActive(true);
     }
   }
+
   const dataContainer = useRef();
   const [dataContainerStyle, setDataContainerStyle] = useState();
   useEffect(() => {
@@ -90,11 +101,11 @@ export default function SelectInput() {
     >
       <div className="formstep__select-title-container">
         <div className="formstep__select-title ">
-          {categories.find((i) => i.isActive)
-            ? categories
-                .filter((i) => i.isActive)
-                .map((i, ind) => <SelectTag key={ind} title={i.title} />)
-            : 'Выберите категорию'}
+          {MainStore.category ? (
+            <SelectTag title={MainStore.category} />
+          ) : (
+            'Выберите категорию'
+          )}
         </div>
       </div>
       <div

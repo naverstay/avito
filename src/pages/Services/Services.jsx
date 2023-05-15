@@ -1,7 +1,8 @@
-import Step1 from "components/Step1/Step1";
-import Step2 from "components/Step2/Step2";
-import { observer } from "mobx-react";
-import MainStore from "stores/MainStore";
+import Step1 from 'components/Step1/Step1';
+import Step2 from 'components/Step2/Step2';
+import { observer } from 'mobx-react';
+import MainStore from 'stores/MainStore';
+import Answers from 'components/Answers/Answers';
 
 export const Services = observer(() => {
   // Подстраницы
@@ -10,5 +11,9 @@ export const Services = observer(() => {
     step2: <Step2 />,
   };
 
-  return steps[MainStore.currentStep];
-})
+  return (
+    <>
+      {steps[MainStore.currentStep]}
+      <Answers />
+    </>)
+});

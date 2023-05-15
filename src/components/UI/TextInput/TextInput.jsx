@@ -1,20 +1,22 @@
 import './TextInput.scss';
 
 export default function TextInput({
-  data,
+  placeholder,
+  maxLength = 200,
+  value,
   onChange,
   style = {},
   onKeyDown = () => { },
 }) {
   return (
     <input
-      maxLength={data.maxLength || 200}
+      maxLength={maxLength || 200}
       style={style}
       type="text"
       className="textinput"
-      placeholder={data.placeholder}
+      placeholder={placeholder}
       onChange={onChange}
-      value={data.value}
+      value={value}
       onKeyDown={onKeyDown}
     />
   );

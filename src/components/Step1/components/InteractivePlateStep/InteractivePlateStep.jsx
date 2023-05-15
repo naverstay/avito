@@ -1,14 +1,15 @@
 import Plate from 'components/UI/Plate/Plate';
 import TextInput from 'components/UI/TextInput/TextInput';
-import { useState } from 'react';
 import './InteractivePlateStep.scss';
 import FAQ from 'components/UI/FAQ/FAQ';
 import SelectInput from '../SelectInput/SelectInput';
-import Phrase from '../Phrase/Phrase';
+import { Phrase } from '../Phrase/Phrase';
 import Button from 'components/UI/Button/Button';
 import MainStore from 'stores/MainStore';
+import { observer } from 'mobx-react';
+import { useEffect } from 'react';
 
-export default function InteractivePlateStep() {
+export const InteractivePlateStep = observer(() => {
   const plateStyle = {
     padding: '48px 60px',
     gridArea: 'c',
@@ -17,32 +18,7 @@ export default function InteractivePlateStep() {
     flexDirection: 'column',
   };
 
-  // Адрес объявления
-  const [adaddress, setAdaddress] = useState({
-    value: '',
-    placeholder: 'Укажите тут адрес вашего объявления на Авито',
-  });
-  function adaddresshandler(e) {
-    setAdaddress({ ...adaddress, value: e.target.value });
-  }
-
-  // Страна
-  const [country, setCountry] = useState({
-    value: '',
-    placeholder: 'Укажите страну',
-  });
-  function countryhandler(e) {
-    setCountry({ ...country, value: e.target.value });
-  }
   const countryStyle = { marginTop: 30 };
-  // Город
-  const [city, setCity] = useState({
-    value: '',
-    placeholder: 'Укажите город',
-  });
-  function cityhandler(e) {
-    setCity({ ...city, value: e.target.value });
-  }
   const cityStyle = { marginTop: 20, marginBottom: 30 };
 
   // Для FAQ
@@ -56,10 +32,14 @@ export default function InteractivePlateStep() {
     margin: 'auto auto 0',
   };
 
+  useEffect(() => {
+    MainStore.calculations.calculate();
+  }, []);
+
   return (
     <Plate style={plateStyle}>
       <p className="interactive__form-title">Шаг 01</p>
-      <TextInput data={adaddress} onChange={adaddresshandler} />
+      <TextInput placeholder="Укажите тут адрес вашего объявления на Авито" value={MainStore.linkToAvitoAd} onChange={MainStore.setLinkToAvitoAd} />
 
       <div className="formstep__item">
         <div className="formstep__item-title">
@@ -86,11 +66,12 @@ export default function InteractivePlateStep() {
         </div>
 
         <TextInput
-          data={country}
-          onChange={countryhandler}
+          value={MainStore.country}
+          onChange={MainStore.setCountry}
           style={countryStyle}
+          placeholder="Укажите страну"
         />
-        <TextInput data={city} onChange={cityhandler} style={cityStyle} />
+        <TextInput placeholder="Укажите город" value={MainStore.city} onChange={MainStore.setCity} style={cityStyle} />
       </div>
 
       <Button
@@ -98,7 +79,8 @@ export default function InteractivePlateStep() {
         classes={['outlined']}
         style={buttonStyle}
         onClick={() => { MainStore.setCurrentStep('step2') }}
+        disabled={MainStore.createProjectButtonIsDisable}
       />
     </Plate>
   );
-}
+})

@@ -1,5 +1,5 @@
-import InteractivePlateControls from '../InteractivePlateControls/InteractivePlateControls';
-import InteractivePlateStep from '../InteractivePlateStep/InteractivePlateStep';
+import { InteractivePlateControls } from '../InteractivePlateControls/InteractivePlateControls';
+import { InteractivePlateStep } from '../InteractivePlateStep/InteractivePlateStep';
 import InteractivePlateText from '../InteractivePlateText/InteractivePlateText';
 import './Interactive.scss';
 

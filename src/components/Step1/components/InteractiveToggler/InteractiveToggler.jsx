@@ -1,13 +1,13 @@
 import Toggler from '../../../UI/Toggler/Toggler';
 import './InteractiveToggler.scss';
 
-export default function InteractiveToggler({ data }) {
+export default function InteractiveToggler({ title, isActive, price, handler }) {
   return (
     <div className="interactivetoggler">
-      <Toggler isActive={data.isActive} />
-      <p className="interactivetoggler__title">{data.title}</p>
+      <Toggler isActive={isActive} handler={handler} />
+      <p className="interactivetoggler__title">{title}</p>
       <p className="interactivetoggler__price">
-        {data.price !== 0 ? data.price + ' ₽' : 'Бесплатно'}
+        {price !== 0 ? price + ' ₽' : 'Бесплатно'}
       </p>
     </div>
   );

@@ -20,33 +20,54 @@ export default function Header() {
 
   return (
     <header className="header">
-      <div className="header__inner">
-        <img src={logo} alt="logo" className="header__logo" />
-        {buttons.map((i, ind) => (
-          <button
-            key={ind}
-            className={'header__link' + (i.isActive ? ' _active' : '')}
-            onClick={() => {
-              MainStore.setCurrentPage(i.name);
-            }}
-          >
-            {i.title}
-          </button>
-        ))}
-        <a href="#answers" className="header__link">
-          Обучение
-        </a>
+      <div className="header__inner" style={MainStore.currentPage !== 'login' ? {} : { justifyContent: 'center' }}>
+        <a href="https://aggo.ru/"><img src={logo} alt="logo" className="header__logo" /></a>
 
-        <div className="header__auth-container">
-          {MainStore.isAuth ? (
-            <p className="header__user">Илья</p>
-          ) : (
-            <>
-              <Button title="Вход" classes={['small']} />
-              <Button title="Регистрация" classes={['outlined', 'small']} />
-            </>
-          )}
-        </div>
+        {MainStore.currentPage !== 'login' &&
+          <>
+
+            {buttons.map((i, ind) => (
+              <button
+                key={ind}
+                className={'header__link' + (i.isActive ? ' _active' : '')}
+                onClick={() => {
+                  MainStore.setCurrentPage(i.name);
+                }}
+              >
+                {i.title}
+              </button>
+            ))}
+
+            <a href="#answers" className="header__link">
+              Обучение
+            </a>
+
+            <div className="header__auth-container">
+              {MainStore.isAuth ? (
+                <p className="header__user">Илья</p>
+              ) : (
+                <>
+                  <Button
+                    title="Вход"
+                    classes={['small']}
+                    onClick={() => {
+                      MainStore.setCurrentPage('login');
+                      MainStore.setIsFormModeLogin(true);
+                    }}
+                  />
+                  <Button
+                    title="Регистрация"
+                    classes={['outlined', 'small']}
+                    onClick={() => {
+                      MainStore.setCurrentPage('login');
+                      MainStore.setIsFormModeLogin(false);
+                    }}
+                  />
+                </>
+              )}
+            </div>
+          </>
+        }
       </div>
     </header>
   );

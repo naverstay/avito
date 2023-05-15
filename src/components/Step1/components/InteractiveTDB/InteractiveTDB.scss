@@ -1,4 +1,4 @@
-@import '../../../../utils.scss';
+@import "../../../../utils.scss";
 
 .interactiveTDB {
   @extend %text;
@@ -21,6 +21,8 @@
 }
 
 .interactiveTDB__digit {
+  font-size: 30px;
+  line-height: 1;
   & span:nth-child(2) {
     font-size: 40px;
     line-height: 48px;
@@ -43,10 +45,10 @@
   background-color: $lightgrey;
 
   &-progress {
-    width: 10%;
     height: 100%;
     position: absolute;
     border-radius: 30px;
     background-color: $green;
+    transition: all 0.4s;
   }
 }

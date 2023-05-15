@@ -1,10 +1,10 @@
 import './Button.scss';
 
-export default function Button({ title, classes = [], style = {}, onClick = () => { } }) {
+export default function Button({ title, classes = [], style = {}, onClick = () => { }, disabled = false }) {
   // classes: [outlined, small, wide]
 
   return (
-    <button style={style} className={'button ' + classes.join(' ')} onClick={onClick}>
+    <button disabled={disabled} style={style} className={'button ' + classes.join(' ')} onClick={onClick}>
       {title}
     </button>
   );

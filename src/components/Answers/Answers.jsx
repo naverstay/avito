@@ -26,19 +26,8 @@ export default function Answers() {
     },
   ];
 
-  const questions2 = [
-    {
-      title: 'Другие предложения по кредитным картам',
-      text: 'UPTOUP - это платформа, позволяющая быстро и просто повысить отдачу от ваших рекламных объявлений. Пользуйтесь платформой, чтобы оптимизировать затраты на рекламу, всегда опережает своих конкурентов и получать больше заявок с Авито',
-    },
-  ];
-
   const plateStyle = {
     padding: '30px 60px 60px',
-  };
-  const plateStyle2 = {
-    padding: '30px 60px',
-    marginTop: '60px',
   };
 
   return (
@@ -52,11 +41,6 @@ export default function Answers() {
           ))}
         </Plate>
 
-        <Plate style={plateStyle2}>
-          {questions2.map((i, ind) => (
-            <Accordion title={i.title} text={i.text} key={ind} />
-          ))}
-        </Plate>
       </div>
     </section>
   );
