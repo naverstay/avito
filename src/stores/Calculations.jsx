@@ -30,14 +30,25 @@ export default class Calculations {
 
       reportsPriceIsActive: observable,
       switchReportsPriceIsActive: action,
+      setReportsPriceIsActive: action,
+
       monitoringPriceIsActive: observable,
       switchMonitoringPriceIsActive: action,
+      setMonitoringPriceIsActive: action,
+
       seeNumberPriceIsActive: observable,
       switchSeeNumberPriceIsActive: action,
+      setSeeNumberPriceIsActive: action,
+
       seePhotoPriceIsActive: observable,
       switchSeePhotoPriceIsActive: action,
+      setSeePhotoPriceIsActive: action,
+
       showMapPriceIsActive: observable,
       switchShowMapPriceIsActive: action,
+      setShowMapPriceIsActive: action,
+
+      _resetTogglers: action,
 
       feedbackQuantity: observable,
       feedbackTotalPrice: observable,
@@ -48,6 +59,8 @@ export default class Calculations {
 
       setActivityQuantity: action,
       calculate: action,
+
+      reset: action,
     });
   }
 
@@ -139,7 +152,7 @@ export default class Calculations {
     },
   ];
   categoryMultiply = null;
-  setCategoryMultiply() {
+  _setCategoryMultiply() {
     if (this.mainStore.category) {
 
       this.categoryMultiply = this.categoryMultiplies.find(
@@ -162,7 +175,7 @@ export default class Calculations {
   searchPhrasesQuantity = null;
   activityQuantityMin = null;
   activityQuantityMax = null;
-  setActivityBorders() {
+  _setActivityBorders() {
     this.searchPhrasesQuantity = this.mainStore.searchPhrases.length ? this.mainStore.searchPhrases.length - 1 : 0;
 
     this.activityQuantityMin = this.searchPhrasesActivityBorders[this.searchPhrasesQuantity].min;
@@ -180,7 +193,7 @@ export default class Calculations {
   activityFavouritesCoeff = this.activityCoeff[this.activityLevel][0];
   activityMessagesCoeff = this.activityCoeff[this.activityLevel][1];
   activitySubscribeCoeff = this.activityCoeff[this.activityLevel][2];
-  setActivityCoeff() {
+  _setActivityCoeff() {
     const percent = (this.activityQuantity - this.activityQuantityMin) / (this.activityQuantityMax - this.activityQuantityMin) * 100;
     if (percent < 33) {
       this.activityLevel = 0;
@@ -200,7 +213,7 @@ export default class Calculations {
   minActivityFavourites = null;
   minActivityMessages = null;
   minActivitySubscribe = null;
-  setMinActivityQuantity() {
+  _setMinActivityQuantity() {
     this.minActivityFavourites = Math.round(this.activityQuantityMin * this.activityCoeff[0][0]);
     this.minActivityMessages = Math.round(this.activityQuantityMin * this.activityCoeff[0][1]);
     this.minActivitySubscribe = this.activityQuantityMin - this.minActivityFavourites - this.minActivityMessages;
@@ -209,7 +222,7 @@ export default class Calculations {
   maxActivityFavourites = null;
   maxActivityMessages = null;
   maxActivitySubscribe = null;
-  setMaxActivityQuantity() {
+  _setMaxActivityQuantity() {
     this.maxActivityFavourites = Math.round(this.activityQuantityMax * this.activityCoeff[2][0]);
     this.maxActivityMessages = Math.round(this.activityQuantityMax * this.activityCoeff[2][1]);
     this.maxActivitySubscribe = this.activityQuantityMax - this.maxActivityFavourites - this.maxActivityMessages;
@@ -219,7 +232,7 @@ export default class Calculations {
   // Значения ползунка активностей
   // MIN
   minActivityPrice = null;
-  setMinActivityPrice() {
+  _setMinActivityPrice() {
     this.minActivityPrice =
       Math.ceil(
         (
@@ -230,7 +243,7 @@ export default class Calculations {
   }
   // MAX
   maxActivityPrice = null;
-  setMaxActivityPrice() {
+  _setMaxActivityPrice() {
     this.maxActivityPrice =
       Math.ceil(
         (
@@ -241,7 +254,7 @@ export default class Calculations {
   }
   // Выбранная пользователем цена
   activityPrice = this.minActivityPrice;
-  setActivityPrice() {
+  _setActivityPrice() {
     this.activityPrice =
       Math.ceil(
         (
@@ -254,7 +267,7 @@ export default class Calculations {
 
   // Видимость
   vision = null;
-  setVision() {
+  _setVision() {
     this.vision = Math.round((this.activityQuantity - this.activityQuantityMin) * (this.MAX_VISION - this.MIN_VISION) / (this.activityQuantityMax - this.activityQuantityMin) + this.MIN_VISION);
   }
 
@@ -263,7 +276,7 @@ export default class Calculations {
   barFavouritesWidth = null;
   barMessagesWidth = null;
   barSubscribeWidth = null;
-  setBarsWidth() {
+  _setBarsWidth() {
     this.barFavouritesWidth = Math.round(this.activityFavourites / this.maxActivityFavourites * 100);
     this.barMessagesWidth = Math.round(this.activityMessages / this.maxActivityMessages * 100);
     this.barSubscribeWidth = this.activitySubscribe > this.maxActivitySubscribe ? 100 : Math.round(this.activitySubscribe / this.maxActivitySubscribe * 100);
@@ -272,15 +285,8 @@ export default class Calculations {
 
   // Количество дней работы
   daysQuantity = null;
-  setDaysQuantity() {
-    const percent = (this.activityQuantity - this.activityQuantityMin) / (this.activityQuantityMax - this.activityQuantityMin) * 100;
-    if (percent < 33) {
-      this.daysQuantity = this.DAYS_QUANTITY[0];
-    } else if (percent >= 33 && percent <= 66) {
-      this.daysQuantity = this.DAYS_QUANTITY[1];
-    } else if (percent > 66) {
-      this.daysQuantity = this.DAYS_QUANTITY[2];
-    }
+  _setDaysQuantity() {
+    this.daysQuantity = this.DAYS_QUANTITY[this.activityLevel];
   }
 
 
@@ -290,27 +296,44 @@ export default class Calculations {
   reportsPriceIsActive = false;
   switchReportsPriceIsActive = () => {
     this.reportsPriceIsActive = !this.reportsPriceIsActive;
-    this.setTotalPrice();
+    this._setTotalPrice();
   }
+  setReportsPriceIsActive = (value) => { this.reportsPriceIsActive = value }
+
   monitoringPriceIsActive = false;
   switchMonitoringPriceIsActive = () => {
     this.monitoringPriceIsActive = !this.monitoringPriceIsActive;
-    this.setTotalPrice();
+    this._setTotalPrice();
   }
+  setMonitoringPriceIsActive = (value) => { this.monitoringPriceIsActive = value }
+
   seeNumberPriceIsActive = false;
   switchSeeNumberPriceIsActive = () => {
     this.seeNumberPriceIsActive = !this.seeNumberPriceIsActive;
-    this.setTotalPrice();
+    this._setTotalPrice();
   }
+  setSeeNumberPriceIsActive = (value) => { this.seeNumberPriceIsActive = value }
+
   seePhotoPriceIsActive = false;
   switchSeePhotoPriceIsActive = () => {
     this.seePhotoPriceIsActive = !this.seePhotoPriceIsActive;
-    this.setTotalPrice();
+    this._setTotalPrice();
   }
+  setSeePhotoPriceIsActive = (value) => { this.seePhotoPriceIsActive = value }
+
   showMapPriceIsActive = false;
   switchShowMapPriceIsActive = () => {
     this.showMapPriceIsActive = !this.showMapPriceIsActive;
-    this.setTotalPrice();
+    this._setTotalPrice();
+  }
+  setShowMapPriceIsActive = (value) => { this.showMapPriceIsActive = value }
+
+  _resetTogglers() {
+    this.reportsPriceIsActive = false;
+    this.monitoringPriceIsActive = false;
+    this.seeNumberPriceIsActive = false;
+    this.seePhotoPriceIsActive = false;
+    this.showMapPriceIsActive = false;
   }
 
   // Отзывы
@@ -320,7 +343,7 @@ export default class Calculations {
     this.feedbackQuantity = value;
     this.feedbackTotalPrice = this.feedbackQuantity * this.FEEDBACK_PRICE;
 
-    this.setTotalPrice();
+    this._setTotalPrice();
   }
 
 
@@ -328,15 +351,51 @@ export default class Calculations {
 
   // Изменение фразы и категории
   calculate() {
-    console.log('calculation');
-    this.setCategoryMultiply();
-    this.setActivityBorders();
-    this.setMinActivityQuantity();
-    this.setMaxActivityQuantity();
-    this.setMinActivityPrice();
-    this.setMaxActivityPrice();
+    this._setCategoryMultiply();
+    this._setActivityBorders();
+    this._setMinActivityQuantity();
+    this._setMaxActivityQuantity();
+    this._setMinActivityPrice();
+    this._setMaxActivityPrice();
 
     this.setActivityQuantity(this.activityQuantityMin);
+
+    console.log('%cЛокальное хранилище', 'padding:5px 8px;background:#00ff0055;font-style:italic;');
+    console.log({
+      categoryMultiply: this.categoryMultiply,
+      searchPhrasesQuantity: this.searchPhrasesQuantity,
+      activityQuantityMin: this.activityQuantityMin,
+      activityQuantityMax: this.activityQuantityMax,
+      activityFavouritesCoeff: this.activityFavouritesCoeff,
+      activityMessagesCoeff: this.activityMessagesCoeff,
+      activitySubscribeCoeff: this.activitySubscribeCoeff,
+      minActivityFavourites: this.minActivityFavourites,
+      minActivityMessages: this.minActivityMessages,
+      minActivitySubscribe: this.minActivitySubscribe,
+      maxActivityFavourites: this.maxActivityFavourites,
+      maxActivityMessages: this.maxActivityMessages,
+      maxActivitySubscribe: this.maxActivitySubscribe,
+      minActivityPrice: this.minActivityPrice,
+      maxActivityPrice: this.maxActivityPrice,
+      activityPrice: this.activityPrice,
+      vision: this.vision,
+      barFavouritesWidth: this.barFavouritesWidth,
+      barMessagesWidth: this.barMessagesWidth,
+      barSubscribeWidth: this.barSubscribeWidth,
+      daysQuantity: this.daysQuantity,
+      reportsPriceIsActive: this.reportsPriceIsActive,
+      monitoringPriceIsActive: this.monitoringPriceIsActive,
+      seeNumberPriceIsActive: this.seeNumberPriceIsActive,
+      seePhotoPriceIsActive: this.seePhotoPriceIsActive,
+      showMapPriceIsActive: this.showMapPriceIsActive,
+      feedbackQuantity: this.feedbackQuantity,
+      feedbackTotalPrice: this.feedbackTotalPrice,
+      activityFavourites: this.activityFavourites,
+      activityMessages: this.activityMessages,
+      activitySubscribe: this.activitySubscribe,
+      activityQuantity: this.activityQuantity,
+      totalPrice: this.totalPrice,
+    });
   }
 
   // Изменение ползунка активностей
@@ -345,25 +404,25 @@ export default class Calculations {
   activitySubscribe = null;
   activityQuantity = 0;
   setActivityQuantity = (value) => {
-    this.setActivityCoeff();
-
     this.activityQuantity = value;
+
+    this._setActivityCoeff();
 
     this.activityFavourites = Math.round(this.activityQuantity * this.activityFavouritesCoeff);
     this.activityMessages = Math.round(this.activityQuantity * this.activityMessagesCoeff);
     this.activitySubscribe = this.activityQuantity - this.activityFavourites - this.activityMessages;
 
-    this.setVision();
-    this.setActivityPrice();
-    this.setBarsWidth();
-    this.setTotalPrice();
-    this.setDaysQuantity();
+    this._setVision();
+    this._setActivityPrice();
+    this._setBarsWidth();
+    this._setDaysQuantity();
+    this._setTotalPrice();
   }
 
 
   // Общая цена
   totalPrice = 0;
-  setTotalPrice() {
+  _setTotalPrice() {
     this.totalPrice =
       this.activityPrice +
       (this.reportsPriceIsActive ? this.REPORTS_PRICE : 0) +
@@ -372,6 +431,14 @@ export default class Calculations {
       (this.seePhotoPriceIsActive ? this.SEE_PHOTO_PRICE : 0) +
       (this.showMapPriceIsActive ? this.SHOW_MAP_PRICE : 0) +
       this.feedbackTotalPrice;
+  }
+
+
+  // Сброс параметров
+  reset() {
+    this._resetTogglers();
+    this.setFeedbackQuantity(1);
+    this.calculate();
   }
 
 }

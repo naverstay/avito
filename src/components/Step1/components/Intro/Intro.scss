@@ -1,4 +1,4 @@
-@import '../../../../utils.scss';
+@import "src/utils";
 
 .main__intro {
   margin-top: 130px;
@@ -15,7 +15,7 @@
   position: relative;
 
   &::after {
-    content: '';
+    content: "";
     width: 258px;
     height: 7px;
     background-color: $black;

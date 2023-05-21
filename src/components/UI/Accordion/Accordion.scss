@@ -1,4 +1,4 @@
-@import 'src/utils';
+@import "src/utils";
 
 .accordion {
   cursor: pointer;
@@ -18,24 +18,30 @@
   align-items: center;
 
   &::after {
-    content: '';
+    content: "";
     width: 20px;
     height: 8px;
-    background: center/contain url('~assets/images/accordion.svg') no-repeat;
+    background: center/contain url("~assets/images/accordion.svg") no-repeat;
     transition: all 0.5s;
   }
 }
 
 .accordion__text {
-  @extend %text;
   height: 0;
   box-sizing: content-box;
   transition: all 0.5s;
+
+  & p {
+    @extend %text;
+  }
+  & a {
+    color: $yellow;
+  }
 }
 
 // Анимация
 .accordion._active {
   & .accordion__title::after {
-    transform: rotate(180deg);
+    transform: rotate3d(1, 0, 0, 180deg);
   }
 }

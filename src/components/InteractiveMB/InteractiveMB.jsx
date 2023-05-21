@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import './InteractiveMB.scss';
 
 export default function InteractiveMB(props) {
@@ -16,7 +16,7 @@ export default function InteractiveMB(props) {
   }, [props])
 
   return (
-    <div className="interactiveMB">
+    <div className="interactiveMB" style={props.style || {}}>
       <div className="interactiveMB__title-container">
         <p className="interactiveMB__title">{props.title}</p>
         <p className="interactiveMB__digit">

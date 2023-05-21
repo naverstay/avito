@@ -1,0 +1,9 @@
+@import "src/utils";
+
+.tablehead {
+  @extend %tablerow;
+
+  th {
+    text-align: left;
+  }
+}

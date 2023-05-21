@@ -1,5 +1,6 @@
 $black: #1e1e1e;
 $yellow: #fed400;
+$lightyellow: #fff5cb;
 $green: #37ac38;
 $lightgrey: #f9f9fb;
 
@@ -18,7 +19,7 @@ $lightgrey: #f9f9fb;
   column-gap: 15px;
 
   &::before {
-    content: '';
+    content: "";
     width: 8px;
     height: 8px;
     border-radius: 50%;
@@ -27,3 +28,38 @@ $lightgrey: #f9f9fb;
     margin-top: calc((1em - 8px) / 2);
   }
 }
+
+%tablerow {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 25% 13% 13% 5% 5% 5% 20% 14%;
+  padding: 20px 0;
+
+  > div:nth-child(2) {
+    margin: 0 auto;
+    cursor: pointer;
+  }
+
+  > div:nth-child(4),
+  > div:nth-child(5),
+  > div:nth-child(6) {
+    margin: 0 auto;
+  }
+
+  > div:last-child {
+    justify-self: flex-end;
+  }
+
+  ._bold {
+    font-weight: 700;
+  }
+
+  ._price {
+    margin-left: 70px;
+  }
+}
+
+$calendarcellwidth: 31px;
+$calendarcellsdistance: 20px;
+$calendarcellsverticaldistance: 15px;
+$calendarcelldistance: 10px;

@@ -1,4 +1,4 @@
-import Toggler from '../../../UI/Toggler/Toggler';
+import Toggler from 'components/UI/Toggler/Toggler';
 import './InteractiveToggler.scss';
 
 export default function InteractiveToggler({ title, isActive, price, handler }) {

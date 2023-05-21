@@ -1,4 +1,5 @@
 import Calculations from './Calculations';
+import Strategy from './Strategy';
 
 const { makeObservable, observable, action } = require('mobx');
 
@@ -6,16 +7,11 @@ class MainStore {
 
   constructor() {
     this.calculations = new Calculations(this);
+    this.strategy = new Strategy(this);
 
     makeObservable(this, {
-      currentPage: observable,
-      setCurrentPage: action,
-
       isAuth: observable,
       setIsAuth: action,
-
-      currentStep: observable,
-      setCurrentStep: action,
 
       isFormModeLogin: observable,
       setIsFormModeLogin: action,
@@ -27,31 +23,27 @@ class MainStore {
       searchPhrases: observable,
       addSearchPhrase: action,
       removeSearchPhrase: action,
+      setSearchPhrases: action,
       country: observable,
       setCountry: action,
       city: observable,
       setCity: action,
 
       createProjectButtonIsDisable: observable,
-    });
-  }
 
-  // Текущая страница
-  currentPage = 'services';
-  setCurrentPage(newPage) {
-    this.currentPage = newPage;
+      _resetCity: action,
+      _resetCountry: action,
+      _resetSearchPhrases: action,
+      _resetLinkToAvitoAd: action,
+      _resetCategory: action,
+      reset: action,
+    });
   }
 
   // Залогинен ли пользователь
   isAuth = false;
   setIsAuth(bool) {
     this.isAuth = bool;
-  }
-
-  // Текущий шаг
-  currentStep = 'step1';
-  setCurrentStep(newStep) {
-    this.currentStep = newStep;
   }
 
   // Тип формы
@@ -63,11 +55,12 @@ class MainStore {
   // Первые данные для продвижения
   // Адрес объявления на авито
   linkToAvitoAd = '';
-  setLinkToAvitoAd = (e) => {
-    this.linkToAvitoAd = e.target.value;
+  setLinkToAvitoAd = (value) => {
+    this.linkToAvitoAd = value;
 
     this.checkValidation();
   };
+  _resetLinkToAvitoAd() { this.linkToAvitoAd = '' }
 
   // Категория
   category = '';
@@ -77,6 +70,7 @@ class MainStore {
 
     this.checkValidation();
   }
+  _resetCategory() { this.category = '' }
 
   // Поисковые фразы
   searchPhrases = [];
@@ -92,22 +86,26 @@ class MainStore {
 
     this.checkValidation();
   }
+  setSearchPhrases(array) { this.searchPhrases = array }
+  _resetSearchPhrases() { this.searchPhrases = [] }
 
   // Страна
   country = '';
-  setCountry = (e) => {
-    this.country = e.target.value;
+  setCountry = (value) => {
+    this.country = value;
 
     this.checkValidation();
   }
+  _resetCountry() { this.country = '' }
 
   // Город
   city = '';
-  setCity = (e) => {
-    this.city = e.target.value;
+  setCity = (value) => {
+    this.city = value;
 
     this.checkValidation();
   }
+  _resetCity() { this.city = '' }
 
   // Проверка заполненных полей
   createProjectButtonIsDisable = true;
@@ -123,6 +121,17 @@ class MainStore {
     } else {
       this.createProjectButtonIsDisable = true;
     }
+  }
+
+  reset() {
+    this._resetCity();
+    this._resetCountry();
+    this._resetSearchPhrases();
+    this._resetLinkToAvitoAd();
+    this._resetCategory();
+
+    this.checkValidation();
+    this.calculations.reset();
   }
 }
 

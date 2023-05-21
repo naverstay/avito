@@ -1,4 +1,4 @@
-@import '../../../../utils.scss';
+@import "src/utils";
 
 .sound__container {
   position: relative;
@@ -7,7 +7,7 @@
 
 .sound__track {
   display: grid;
-  grid-template-areas: 'a b' 'a c';
+  grid-template-areas: "a b" "a c";
   grid-gap: 6px 20px;
   grid-template-columns: auto 1fr;
 }
@@ -15,8 +15,7 @@
 .sound__button {
   width: 61px;
   height: 61px;
-  background: center/contain url(../../../../assets/images/soundbutton.svg)
-    no-repeat;
+  background: center/contain url(../../../../assets/images/soundbutton.svg) no-repeat;
   grid-area: a;
   transition: all 0.5s;
 
@@ -147,22 +146,20 @@
   font-weight: 600;
 
   &::before {
-    content: '';
+    content: "";
     width: 14px;
     height: 14px;
-    background: center/contain url(../../../../assets/images/soundquotbef.svg)
-      no-repeat;
+    background: center/contain url(~assets/images/soundquotbef.svg) no-repeat;
     position: absolute;
     top: -6px;
     left: 0;
   }
 
   &::after {
-    content: '';
+    content: "";
     width: 14px;
     height: 14px;
-    background: center/contain url(../../../../assets/images/soundquotaft.svg)
-      no-repeat;
+    background: center/contain url(~assets/images/soundquotaft.svg) no-repeat;
     position: absolute;
     bottom: -8px;
     right: 26px;
@@ -175,8 +172,7 @@
   &._big {
     width: 242px;
     height: 242px;
-    background: center/contain url(../../../../assets/images/soundcirclebig.svg)
-      no-repeat;
+    background: center/contain url(~assets/images/soundcirclebig.svg) no-repeat;
     bottom: 63px;
     right: -84px;
   }
@@ -184,8 +180,7 @@
   &._small {
     width: 118px;
     height: 118px;
-    background: center/contain
-      url(../../../../assets/images/soundcirclesmall.svg) no-repeat;
+    background: center/contain url(~assets/images/soundcirclesmall.svg) no-repeat;
     bottom: -26px;
     left: -63px;
   }

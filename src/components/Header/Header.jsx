@@ -1,41 +1,38 @@
 import './Header.scss';
-
 import logo from 'assets/images/logo.svg';
 import Button from 'components/UI/Button/Button';
 import MainStore from 'stores/MainStore';
+import { Link, useLocation } from 'react-router-dom';
 
 export default function Header() {
   const buttons = [
     {
       title: 'Услуги',
-      name: 'services',
-      isActive: MainStore.currentPage === 'services',
+      link: '/',
     },
     {
       title: 'Мои проекты',
-      name: 'projects',
-      isActive: MainStore.currentPage === 'projects',
+      link: '/projects',
     },
   ];
+  const location = useLocation();
 
   return (
     <header className="header">
-      <div className="header__inner" style={MainStore.currentPage !== 'login' ? {} : { justifyContent: 'center' }}>
+      <div className="header__inner" style={location.pathname !== '/login' ? {} : { justifyContent: 'center' }}>
         <a href="https://aggo.ru/"><img src={logo} alt="logo" className="header__logo" /></a>
 
-        {MainStore.currentPage !== 'login' &&
+        {location.pathname !== '/login' &&
           <>
 
             {buttons.map((i, ind) => (
-              <button
+              <Link
+                to={i.link}
                 key={ind}
-                className={'header__link' + (i.isActive ? ' _active' : '')}
-                onClick={() => {
-                  MainStore.setCurrentPage(i.name);
-                }}
+                className={'header__link' + (location.pathname === i.link ? ' _active' : '')}
               >
                 {i.title}
-              </button>
+              </Link>
             ))}
 
             <a href="#answers" className="header__link">
@@ -47,22 +44,24 @@ export default function Header() {
                 <p className="header__user">Илья</p>
               ) : (
                 <>
-                  <Button
-                    title="Вход"
-                    classes={['small']}
-                    onClick={() => {
-                      MainStore.setCurrentPage('login');
-                      MainStore.setIsFormModeLogin(true);
-                    }}
-                  />
-                  <Button
-                    title="Регистрация"
-                    classes={['outlined', 'small']}
-                    onClick={() => {
-                      MainStore.setCurrentPage('login');
-                      MainStore.setIsFormModeLogin(false);
-                    }}
-                  />
+                  <Link to="/login">
+                    <Button
+                      title="Вход"
+                      classes={['small']}
+                      onClick={() => {
+                        MainStore.setIsFormModeLogin(true);
+                      }}
+                    />
+                  </Link>
+                  <Link to="/login">
+                    <Button
+                      title="Регистрация"
+                      classes={['outlined', 'small']}
+                      onClick={() => {
+                        MainStore.setIsFormModeLogin(false);
+                      }}
+                    />
+                  </Link>
                 </>
               )}
             </div>

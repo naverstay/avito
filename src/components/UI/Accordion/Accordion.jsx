@@ -10,7 +10,7 @@ export default function Accordion(props) {
   }
 
   const ref = useRef();
-  const [textStyle, setTextStyle] = useState();
+  const [textStyle, setTextStyle] = useState({});
   useEffect(() => {
     setTextStyle({
       paddingBottom: '30px',
@@ -24,13 +24,13 @@ export default function Accordion(props) {
       onClick={handler}
     >
       <p className="accordion__title">{title}</p>
-      <p
+      <div
         ref={ref}
         className="accordion__text"
         style={isActive ? textStyle : {}}
+        dangerouslySetInnerHTML={{ __html: text }}
       >
-        {text}
-      </p>
+      </div>
     </div>
   );
 }

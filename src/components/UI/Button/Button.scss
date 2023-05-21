@@ -31,8 +31,8 @@
   }
 
   &:disabled {
-    background-color: $lightgrey;
-    border-color: $lightgrey;
+    background-color: $lightyellow;
+    border-color: $lightyellow;
     cursor: not-allowed;
     opacity: 0.4;
   }
