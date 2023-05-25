@@ -41,7 +41,7 @@ class MainStore {
   }
 
   // Залогинен ли пользователь
-  isAuth = false;
+  isAuth = true;
   setIsAuth(bool) {
     this.isAuth = bool;
   }

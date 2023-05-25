@@ -4,7 +4,7 @@ import { Messages } from '../Messages/Messages';
 import ToggleText from '../ToggleText/ToggleText';
 import './Direct.scss';
 import { observer } from 'mobx-react';
-import TotalPrice from 'components/TotalPrice/TotalPrice';
+import { TotalPrice } from 'components/TotalPrice/TotalPrice';
 import Button from 'components/UI/Button/Button';
 
 export const Direct = observer(() => {

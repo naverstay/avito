@@ -81,6 +81,18 @@ export const SheduleStrategy = observer(() => {
   }, []);
 
 
+  // Обработчик ползунка активностей
+  // Прибавлять можно
+  // убавлять - все стирается
+  function interactiveMBhandler(value) {
+    // Уменьшаем ползунок
+    if (+value < +MainStore.calculations.activityQuantity) {
+      MainStore.strategy.resetCalendars();
+    }
+    MainStore.calculations.setActivityQuantity(value);
+  }
+
+
   return (
     <>
       <section className="projects">
@@ -107,7 +119,8 @@ export const SheduleStrategy = observer(() => {
                         price={MainStore.calculations.activityPrice}
                         pieces={MainStore.calculations.activityQuantity}
                         secondTextCurrency="действий"
-                        handler={MainStore.calculations.setActivityQuantity}
+                        handler={interactiveMBhandler}
+                        // handler={MainStore.calculations.setActivityQuantity}
                         value={MainStore.calculations.activityQuantity}
                         style={{ maxWidth: 'none' }}
                       />

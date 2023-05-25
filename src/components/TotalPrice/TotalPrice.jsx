@@ -1,7 +1,8 @@
 import MainStore from 'stores/MainStore';
 import './TotalPrice.scss';
+import { observer } from 'mobx-react';
 
-export default function TotalPrice({ mode = "center" }) {
+export const TotalPrice = observer(({ mode = "center" }) => {
   return (
     <div className={"totalprice" + (mode === "left" ? " _left" : "")}>
       <div className="totalprice__text-container">
@@ -17,4 +18,4 @@ export default function TotalPrice({ mode = "center" }) {
       </p>
     </div>
   );
-}
+})

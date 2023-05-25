@@ -7,7 +7,7 @@ import InteractiveMB from '../../../InteractiveMB/InteractiveMB';
 import FAQ from 'components/UI/FAQ/FAQ';
 import InteractiveToggler from '../InteractiveToggler/InteractiveToggler';
 import './InteractivePlateControls.scss';
-import TotalPrice from 'components/TotalPrice/TotalPrice';
+import { TotalPrice } from 'components/TotalPrice/TotalPrice';
 import MainStore from 'stores/MainStore';
 import { observer } from 'mobx-react';
 

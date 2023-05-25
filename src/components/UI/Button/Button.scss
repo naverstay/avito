@@ -16,7 +16,7 @@
   }
 
   &.outlined {
-    background-color: #fff;
+    background-color: transparent;
     &:not(:disabled):hover {
       background-color: $yellow;
     }

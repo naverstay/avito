@@ -31,6 +31,7 @@ export default class Strategy {
 
       calendars: observable,
       addCalendar: action,
+      resetCalendars: action,
 
       cellHandler: action,
 
@@ -91,6 +92,9 @@ export default class Strategy {
   calendars = [{ week: copy(this.week), activitySumms: copy(this.activitySumms) }];
   addCalendar = () => {
     this.calendars.push({ week: copy(this.week), activitySumms: copy(this.activitySumms) });
+  }
+  resetCalendars() {
+    this.calendars = [{ week: copy(this.week), activitySumms: copy(this.activitySumms) }];
   }
 
 

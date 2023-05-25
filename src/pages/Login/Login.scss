@@ -1,6 +1,6 @@
 @import "src/utils";
 
-body {
+body:has(.login) {
   background-color: #fff;
 }
 
