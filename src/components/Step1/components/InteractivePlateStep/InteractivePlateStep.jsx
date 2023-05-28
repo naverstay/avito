@@ -65,7 +65,7 @@ export const InteractivePlateStep = observer(() => {
 
     const projects = getCookie('projects') ? JSON.parse(getCookie('projects')) : [];
     projects.push(projectData);
-    document.cookie = `projects=${JSON.stringify(projects)}`;
+    document.cookie = `projects=${JSON.stringify(projects)};path=/;max-age=31536000`;
   }
 
   useEffect(() => {

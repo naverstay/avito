@@ -16,6 +16,10 @@ import { observer } from 'mobx-react';
 import copy from 'utils/copy';
 
 export const SheduleStrategy = observer(() => {
+
+  // Прокрутка вверх страницы
+  useEffect(() => { window.scroll(0, 0) }, []);
+
   const plateStyle = {
     padding: 60,
     width: '100%',
@@ -70,7 +74,7 @@ export const SheduleStrategy = observer(() => {
         name: 'manual',
       },
     ]);
-    
+
 
     const projects = JSON.parse(getCookie('projects'));
     const data = projects.find(i => i.title.replace(/\D/g, '') === projectId);
