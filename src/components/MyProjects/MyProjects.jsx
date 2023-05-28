@@ -9,16 +9,21 @@ import getCookie from 'utils/getCookie';
 
 export default function MyProjects() {
   const plateStyle = {
-    padding: '60px 15px',
+    padding: '60px 25px',
     width: '100%',
+    margin: '30px 0',
   };
 
 
   // Получение данных с сервера при первом рендеринге
   const [projects, setProjects] = useState([]);
+  const [paidProjects, setPaidProjects] = useState([]);
   useEffect(() => {
     if (getCookie('projects')) {
       setProjects(JSON.parse(getCookie('projects')));
+    }
+    if (getCookie('paidProjects')) {
+      setPaidProjects(JSON.parse(getCookie('paidProjects')));
     }
   }, []);
 
@@ -48,6 +53,19 @@ export default function MyProjects() {
           </p>
         )}
       </Plate>
+
+      {paidProjects.length > 0 &&
+        <Plate style={plateStyle}>
+          <div className="myprojects__table">
+            <TableHead paidProjects={true} />
+            {paidProjects.map((i, ind) => {
+              return (
+                <TableRow key={ind} data={i} paidProjects={true} />
+              );
+            })}
+          </div>
+        </Plate>
+      }
     </>
   );
 }

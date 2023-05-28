@@ -1,7 +1,7 @@
 import TextInput from 'components/UI/TextInput/TextInput';
 import './DirectForm.scss';
 import { useEffect, useRef, useState } from 'react';
-import InteractiveMB from 'components/InteractiveMB/InteractiveMB';
+import { InteractiveMB } from 'components/InteractiveMB/InteractiveMB';
 import MainStore from 'stores/MainStore';
 import ToggleText from '../ToggleText/ToggleText';
 import { observer } from 'mobx-react';
@@ -45,12 +45,17 @@ export const DirectForm = observer(() => {
           <InteractiveMB
             title="Лимит Яндекс Директ"
             min={100}
-            max={1000}
-            pieces={1}
-            handler={() => { }}
-            firstTextCurrency="₽ в месяц"
-            secondTextCurrency="кликов"
+            max={3000}
+            minBar={MainStore.strategy.isExternalTrafficActive ? 1 : 0}
+            maxBar={30}
             currency="₽"
+            firstTextCurrency="₽ в месяц"
+            price={MainStore.strategy.directionClicksPrice}
+            pieces={MainStore.strategy.directClickQuantity}
+            secondTextCurrency="кликов"
+            handler={MainStore.strategy.setDirectClickQuantity}
+            value={MainStore.strategy.directClickQuantity}
+            style={{maxWidth: 350}}
           />
         </div>
       </div>

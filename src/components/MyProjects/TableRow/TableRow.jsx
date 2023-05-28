@@ -4,7 +4,7 @@ import Button from 'components/UI/Button/Button';
 import { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-export default function TableRow({ data }) {
+export default function TableRow({ data, paidProjects = false }) {
 
   // Аккордион анимация
   const [isActive, setIsActive] = useState(false);
@@ -27,20 +27,38 @@ export default function TableRow({ data }) {
   }
 
   return (
-    <div className={'tablerow ' + (isActive ? '_active' : '')}>
+    <div className={'tablerow' + (isActive ? ' _active' : '') + (paidProjects ? ' _paid' : '')}>
       <div className="tablerow__cells">
         <div className="_bold" onClick={() => { setIsActive(!isActive) }}>{data.title}</div>
         <div className={"tablerow__cell _link" + (isCopied ? " _copied" : "")} onClick={linkHandler}><img src={linkIcon} alt="link" /></div>
-        <div>{data.state}</div>
+
+        <div className="tablerow__status">
+          {paidProjects ?
+            Array(10).fill().map((i, ind) => <span className={data.state > ind ? "_active" : ''} key={ind}></span>) :
+            data.state
+          }
+        </div>
+
+        {paidProjects && <div>{{ auto: 'Auto AI', manual: 'Ручной' }[data.placement]}</div>}
+
         <div className="_bold">{data.activityFavourites}</div>
         <div className="_bold">{data.activityMessages}</div>
         <div className="_bold">{data.activitySubscribe}</div>
-        <div className="_bold _price">{data.totalPrice} ₽</div>
-        <div>
-          <Link to={`/projects/${data.title.replace(/\D/g, '')}`}>
-            <Button style={{ width: 166 }} classes={['small']} title="Далее" />
-          </Link>
-        </div>
+
+        {!paidProjects && <div className="_bold _price">{data.totalPrice} ₽</div>}
+
+        {paidProjects && <div className="_bold">{data.directClickQuantity ?? 0}</div>}
+
+        {!paidProjects &&
+          <div>
+            <Link to={`/projects/${data.title.replace(/\D/g, '')}`}>
+              <Button style={{ width: 166 }} classes={['small']} title="Далее" />
+            </Link>
+          </div>
+        }
+
+        {paidProjects && <div><button className="tablerow__refresh"></button></div>}
+
       </div>
       <div ref={ref} className="tablerow__additional" style={isActive ? additionalStyle : {}}>
         <div className="tablerow__additional-container _searchphrases">

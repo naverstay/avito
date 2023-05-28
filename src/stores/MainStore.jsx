@@ -48,7 +48,7 @@ class MainStore {
 
   // Тип формы
   isFormModeLogin = true;
-  setIsFormModeLogin(isModeLogin) {
+  setIsFormModeLogin = (isModeLogin) => {
     this.isFormModeLogin = isModeLogin;
   }
 

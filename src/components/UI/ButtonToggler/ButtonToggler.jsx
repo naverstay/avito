@@ -1,6 +1,7 @@
+import { observer } from 'mobx-react-lite';
 import './ButtonToggler.scss';
 
-export default function ButtonToggler(props) {
+export const ButtonToggler = observer((props) => {
   const { buttons, style, onClick = () => {} } = props;
 
   return (
@@ -35,4 +36,4 @@ export default function ButtonToggler(props) {
       })}
     </div>
   );
-}
+})

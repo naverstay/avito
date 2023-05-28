@@ -69,7 +69,6 @@ export const InteractivePlateStep = observer(() => {
   }
 
   useEffect(() => {
-    // MainStore.calculations.calculate();
     MainStore.reset();
   }, []);
 

@@ -4,7 +4,7 @@
   display: grid;
   grid-template-areas: "a b" "c b";
   grid-gap: 30px 40px;
-  grid-template-columns: 1fr 319px;
+  grid-template-columns: 1fr 350px;
 
   & > *:nth-child(1) {
     grid-area: a;

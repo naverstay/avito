@@ -1,4 +1,4 @@
-import ButtonToggler from 'components/UI/ButtonToggler/ButtonToggler';
+import { ButtonToggler } from 'components/UI/ButtonToggler/ButtonToggler';
 import { useState } from 'react';
 
 import Intro from './components/Intro/Intro';

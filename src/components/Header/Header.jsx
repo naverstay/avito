@@ -29,16 +29,18 @@ export default function Header() {
     setDropDownMenuIsActive(false);
   };
   useEffect(() => {
-    document.body.addEventListener('click', (e) => {
-      if (
-        (!e.target.closest('.dropdownmenu') &&
-          !e.target.closest('.header__user') &&
-          document.querySelector('.dropdownmenu').className.includes('_active')) ||
-        e.target.closest('.dropdownmenu__link')
-      ) {
-        closeDropDownMenu();
-      }
-    });
+    if(document.querySelector('.dropdownmenu')) {
+      document.body.addEventListener('click', (e) => {
+        if (
+          (!e.target.closest('.dropdownmenu') &&
+            !e.target.closest('.header__user') &&
+            document.querySelector('.dropdownmenu').className.includes('_active')) ||
+          e.target.closest('.dropdownmenu__link')
+        ) {
+          closeDropDownMenu();
+        }
+      });
+    }
   }, []);
 
   return (

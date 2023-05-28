@@ -1,7 +1,8 @@
+import { observer } from 'mobx-react-lite';
 import { useEffect, useRef } from 'react';
 import './InteractiveMB.scss';
 
-export default function InteractiveMB(props) {
+export const InteractiveMB = observer((props) => {
 
   const progressBar = useRef();
 
@@ -32,8 +33,8 @@ export default function InteractiveMB(props) {
           ref={progressBar}
           type="range"
           onInput={handler}
-          min={props.minBar || props.min}
-          max={props.maxBar || props.max}
+          min={props.minBar ?? props.min}
+          max={props.maxBar ?? props.max}
           value={props.value}
         />
         <div className="interactiveMB__range-digits">
@@ -49,4 +50,4 @@ export default function InteractiveMB(props) {
       </div>
     </div>
   );
-}
+})

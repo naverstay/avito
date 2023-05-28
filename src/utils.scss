@@ -59,6 +59,20 @@ $red: #c84933;
     margin-left: 70px;
   }
 }
+%tablerow-paid {
+  grid-template-columns: 25% 13% 17% 10% 5% 5% 5% 10% 10%;
+
+  > div:nth-child(4) {
+    margin: 0;
+  }
+
+  > div:nth-child(5),
+  > div:nth-child(6),
+  > div:nth-child(7),
+  > div:nth-child(8) {
+    margin: 0 auto;
+  }
+}
 
 $calendarcellwidth: 31px;
 $calendarcellsdistance: 20px;

@@ -1,18 +1,19 @@
 import './SheduleStrategy.scss';
 import Plate from 'components/UI/Plate/Plate';
 import { useEffect, useState } from 'react';
-import ButtonToggler from 'components/UI/ButtonToggler/ButtonToggler';
+import { ButtonToggler } from 'components/UI/ButtonToggler/ButtonToggler';
 import List from './components/List/List';
 import { Direct } from './components/Direct/Direct';
 import Answers from 'components/Answers/Answers';
 import { useParams } from 'react-router-dom';
 import getCookie from 'utils/getCookie';
 import MainStore from 'stores/MainStore';
-import InteractiveMB from 'components/InteractiveMB/InteractiveMB';
+import { InteractiveMB } from 'components/InteractiveMB/InteractiveMB';
 import FAQ from 'components/UI/FAQ/FAQ';
 import { ManualActivities } from './components/ManualActivities/ManualActivities';
 import { ManualCalendar } from './components/ManualCalendar/ManualCalendar';
 import { observer } from 'mobx-react';
+import copy from 'utils/copy';
 
 export const SheduleStrategy = observer(() => {
   const plateStyle = {
@@ -38,7 +39,7 @@ export const SheduleStrategy = observer(() => {
     backgroundColor: '#f9f9fb',
   };
   function buttonsHandler(e) {
-    const clone = JSON.parse(JSON.stringify(tabs));
+    const clone = copy(tabs);
     clone.forEach(i => {
       if (i.title === e.target.textContent) {
         MainStore.strategy.setPlacement(i.name);
@@ -55,11 +56,28 @@ export const SheduleStrategy = observer(() => {
   const projectId = useParams().id;
   const [currentProject, setCurrentProject] = useState(null);
   useEffect(() => {
+    // Сброс предыдущих введённых данных
+    MainStore.strategy.reset();
+    setTabs([
+      {
+        title: 'Авто AI',
+        isActive: true,
+        name: 'auto',
+      },
+      {
+        title: 'Ручной PRO',
+        isActive: false,
+        name: 'manual',
+      },
+    ]);
+    
+
     const projects = JSON.parse(getCookie('projects'));
     const data = projects.find(i => i.title.replace(/\D/g, '') === projectId);
 
     if (data) {
       setCurrentProject(data);
+      MainStore.strategy.setProjectTitle(data.title);
 
       MainStore.setLinkToAvitoAd(data.linkToAvitoAd);
       // MainStore.setCategory(data.category); - перемещен вниз для логики срабатывания
@@ -78,6 +96,7 @@ export const SheduleStrategy = observer(() => {
       MainStore.setCategory(data.category);
       MainStore.calculations.setActivityQuantity(data.activityQuantity);
     }
+
   }, []);
 
 
@@ -90,6 +109,7 @@ export const SheduleStrategy = observer(() => {
       MainStore.strategy.resetCalendars();
     }
     MainStore.calculations.setActivityQuantity(value);
+    MainStore.strategy.setDirectClickQuantity();
   }
 
 

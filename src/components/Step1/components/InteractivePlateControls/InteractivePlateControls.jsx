@@ -3,7 +3,7 @@ import InteractiveTDB from '../InteractiveTDB/InteractiveTDB';
 import hearticon from 'assets/images/hearticon.svg';
 import humanicon from 'assets/images/humanicon.svg';
 import staricon from 'assets/images/staricon.svg';
-import InteractiveMB from '../../../InteractiveMB/InteractiveMB';
+import { InteractiveMB } from '../../../InteractiveMB/InteractiveMB';
 import FAQ from 'components/UI/FAQ/FAQ';
 import InteractiveToggler from '../InteractiveToggler/InteractiveToggler';
 import './InteractivePlateControls.scss';

@@ -58,7 +58,7 @@ export const Login = observer(() => {
               style={{ margin: '40px 0 47px' }}
               onClick={() => {
                 if (!MainStore.isFormModeLogin) {
-                  MainStore.isFormModeLogin = !MainStore.isFormModeLogin;
+                  MainStore.setIsFormModeLogin(!MainStore.isFormModeLogin);
                 } else {
                   MainStore.setIsAuth(true);
                 }

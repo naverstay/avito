@@ -6,23 +6,35 @@ export default class Strategy {
     this.mainStore = mainStore;
 
     makeObservable(this, {
+      projectTitle: observable,
+      setProjectTitle: action,
+
       placement: observable,
       setPlacement: action,
 
 
       isAutomaticActivityActive: observable,
       switchAutomaticActivity: action,
+      _setIsAutomaticActivityActive: action,
 
       isArrivedMessagesActive: observable,
       switchArrivedMessages: action,
+      _setIsArrivedMessagesActive: action,
+      arrivedMessage: observable,
       setArrivedMessage: action,
 
       isExternalTrafficActive: observable,
       switchExternalTraffic: action,
+      _setIsExternalTrafficActive: action,
       directTitle: observable,
       setDirectTitle: action,
       directDescription: observable,
       setDirectDescription: action,
+      directClickQuantity: observable,
+      setDirectClickQuantity: action,
+      directionClicksPrice: observable,
+      totalPrice: observable,
+      _setTotalPrice: action,
 
 
       times: observable,
@@ -36,6 +48,9 @@ export default class Strategy {
       cellHandler: action,
 
       activitySumms: observable,
+
+
+      payButtonIsDisabled: observable,
     });
   }
 
@@ -45,6 +60,12 @@ export default class Strategy {
     5 // subscribe
   ]
 
+  DIRECTION_CLICK_PRICE = 100
+
+
+  // Название проекта
+  projectTitle = '';
+  setProjectTitle = (value) => { this.projectTitle = value }
 
 
   // Стратегия размещения
@@ -59,22 +80,51 @@ export default class Strategy {
   switchAutomaticActivity = () => {
     this.isAutomaticActivityActive = !this.isAutomaticActivityActive;
   }
+  _setIsAutomaticActivityActive(boolean) { this.isAutomaticActivityActive = boolean }
 
   isArrivedMessagesActive = true;
   switchArrivedMessages = () => {
     this.isArrivedMessagesActive = !this.isArrivedMessagesActive;
   }
+  _setIsArrivedMessagesActive(boolean) { this.isArrivedMessagesActive = boolean; }
   arrivedMessage = '';
   setArrivedMessage(value) { this.arrivedMessage = value }
 
   isExternalTrafficActive = true;
   switchExternalTraffic = () => {
     this.isExternalTrafficActive = !this.isExternalTrafficActive;
+    this.setDirectClickQuantity(this.isExternalTrafficActive ? 7 : 0);
+
+    this.checkValidation();
   }
+  _setIsExternalTrafficActive(boolean) { this.isExternalTrafficActive = boolean }
   directTitle = '';
-  setDirectTitle = (e) => { this.directTitle = e.target.value }
+  setDirectTitle = (e) => {
+    this.directTitle = e.target.value;
+
+    this.checkValidation();
+  }
   directDescription = '';
-  setDirectDescription = (e) => { this.directDescription = e.target.value }
+  setDirectDescription = (e) => {
+    this.directDescription = e.target.value;
+
+    this.checkValidation();
+  }
+  directClickQuantity = 7;
+  setDirectClickQuantity = (value = this.directClickQuantity) => {
+    this.directClickQuantity = value;
+    this.setDirectionClicksPrice();
+    this._setTotalPrice();
+  }
+  directionClicksPrice = this.directClickQuantity * this.DIRECTION_CLICK_PRICE;
+  setDirectionClicksPrice = () => {
+    this.directionClicksPrice = this.directClickQuantity * this.DIRECTION_CLICK_PRICE;
+  }
+  totalPrice = 12;
+  _setTotalPrice() {
+    this.totalPrice = this.mainStore.calculations.totalPrice + this.directionClicksPrice;
+  }
+
 
 
   // Календарь
@@ -131,6 +181,33 @@ export default class Strategy {
         activitySumms[dayIndex][activityIndex] = activitySumm;
       })
     });
+  }
+
+
+  payButtonIsDisabled = true;
+  checkValidation = () => {
+    if (this.isExternalTrafficActive) {
+      if (this.directTitle.length && this.directDescription.length) {
+        this.payButtonIsDisabled = false;
+      } else {
+        this.payButtonIsDisabled = true;
+      }
+    } else {
+      this.payButtonIsDisabled = false;
+    }
+  }
+
+  reset() {
+    this.setProjectTitle('');
+    this.setPlacement('auto');
+    this._setIsAutomaticActivityActive(false);
+    this._setIsArrivedMessagesActive(true);
+    this.setArrivedMessage('Пришлите больше фото на WhatsApp +7 9XX XX XX');
+    this._setIsExternalTrafficActive(true);
+    this.setDirectTitle({target: {value: ''}});
+    this.setDirectDescription({target: {value: ''}});
+    this.setDirectClickQuantity(7);
+    this.resetCalendars();
   }
 
 }
