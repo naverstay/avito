@@ -1,5 +1,5 @@
 import Plate from 'components/UI/Plate/Plate';
-import TextInput from 'components/UI/TextInput/TextInput';
+import {TextInput} from 'components/UI/TextInput/TextInput';
 import './InteractivePlateStep.scss';
 import FAQ from 'components/UI/FAQ/FAQ';
 import SelectInput from '../SelectInput/SelectInput';
@@ -8,7 +8,7 @@ import Button from 'components/UI/Button/Button';
 import MainStore from 'stores/MainStore';
 import { observer } from 'mobx-react';
 import { useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import getCookie from 'utils/getCookie';
 
 export const InteractivePlateStep = observer(() => {
@@ -37,7 +37,14 @@ export const InteractivePlateStep = observer(() => {
   };
 
   // Запись созданного проекта на сервер
+  const navigate = useNavigate();
   function createProject() {
+
+    // Не прошли валидацию
+    if(!MainStore.checkValidation()) {
+      return;
+    }
+
     const projectData = {
       title: `Активность в Авито (№${Math.round(100000 + Math.random() * 899999)})`,
       linkToAvitoAd: MainStore.linkToAvitoAd,
@@ -61,11 +68,12 @@ export const InteractivePlateStep = observer(() => {
 
       state: 'Ждёт оплаты',
     };
-    MainStore.reset();
-
     const projects = getCookie('projects') ? JSON.parse(getCookie('projects')) : [];
     projects.push(projectData);
     document.cookie = `projects=${JSON.stringify(projects)};path=/;max-age=31536000`;
+
+    MainStore.reset();
+    navigate('/projects');
   }
 
   useEffect(() => {
@@ -74,13 +82,19 @@ export const InteractivePlateStep = observer(() => {
 
   // Обработчики ввода
   function setLinkToAvitoAd(e) { MainStore.setLinkToAvitoAd(e.target.value) }
-  function setCountry(e) { MainStore.setCountry(e.target.value) }
+  function setCountry(e) { 
+    // Меняем только для категории Недвижимость
+    if(MainStore.category === 'Недвижимость') {
+      MainStore.setCountry(e.target.value) 
+    }
+
+  }
   function setCity(e) { MainStore.setCity(e.target.value) }
 
   return (
     <Plate style={plateStyle}>
       <p className="interactive__form-title">Шаг 01</p>
-      <TextInput placeholder="Cсылка на объявление Авито, которое планируете продвигать" value={MainStore.linkToAvitoAd} onChange={setLinkToAvitoAd} />
+      <TextInput placeholder="Cсылка на объявление Авито, которое планируете продвигать" value={MainStore.linkToAvitoAd} onChange={setLinkToAvitoAd} errortext={MainStore.linkToAvitoAdError} />
 
       <div className="formstep__item">
         <div className="formstep__item-title">
@@ -88,7 +102,7 @@ export const InteractivePlateStep = observer(() => {
           <FAQ style={categoryfaqstyle} text={categoryfaqtext} />
         </div>
 
-        <SelectInput />
+        <SelectInput errortext={MainStore.categoryError} />
       </div>
 
       <div className="formstep__item">
@@ -106,18 +120,17 @@ export const InteractivePlateStep = observer(() => {
           <FAQ style={categoryfaqstyle} text={cityfaqtext} />
         </div>
 
-        <TextInput placeholder="Укажите страну" value={MainStore.country} onChange={setCountry} style={countryStyle} />
-        <TextInput placeholder="Укажите город" value={MainStore.city} onChange={setCity} style={cityStyle} />
+        <TextInput placeholder="Укажите страну" value={MainStore.country} onChange={setCountry} style={countryStyle} errortext={MainStore.countryError} />
+        <TextInput placeholder="Укажите город" value={MainStore.city} onChange={setCity} style={cityStyle} errortext={MainStore.cityError} />
       </div>
 
-      <Link style={buttonStyle} to="/projects">
-        <Button
-          onClick={createProject}
-          title={'Создать проект'}
-          classes={['outlined']}
-          disabled={MainStore.createProjectButtonIsDisable}
-        />
-      </Link>
+      <Button
+        style={buttonStyle}
+        onClick={createProject}
+        title={'Создать проект'}
+        classes={['outlined']}
+        disabled={MainStore.createProjectButtonIsDisable}
+      />
     </Plate>
   );
 })

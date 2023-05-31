@@ -1,5 +1,5 @@
 import './Phrase.scss';
-import TextInput from 'components/UI/TextInput/TextInput';
+import {TextInput} from 'components/UI/TextInput/TextInput';
 import { useState } from 'react';
 import PhraseTag from '../PhraseTag/PhraseTag';
 import MainStore from 'stores/MainStore';
@@ -44,6 +44,7 @@ export const Phrase = observer(() => {
           placeholder={`Поисковая фраза для продвижения на Авито  (${MainStore.searchPhrases.length} из 4)`}
           onChange={phrasehandler}
           onKeyDown={phrasehandler}
+          errortext={MainStore.searchPhrasesError}
         />
         <button
           onClick={addPhrase}

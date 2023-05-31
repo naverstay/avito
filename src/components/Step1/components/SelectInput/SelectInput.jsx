@@ -3,7 +3,7 @@ import './SelectInput.scss';
 import SelectTag from '../SelectTag/SelectTag';
 import MainStore from 'stores/MainStore';
 
-export default function SelectInput() {
+export default function SelectInput({errortext}) {
   // Категории
   const [categories, setCategories] = useState([
     {
@@ -81,6 +81,13 @@ export default function SelectInput() {
       setCategories(clone);
       setIsActive(true);
     }
+
+    // Страну меняем только на категории Недвижимость
+    if(MainStore.category === 'Недвижимость') {
+      MainStore.setCountry('');
+    } else {
+      MainStore.setCountry('Россия');
+    }
   }
 
   const dataContainer = useRef();
@@ -99,6 +106,8 @@ export default function SelectInput() {
       className={'formstep__select ' + (isActive ? '_active' : '')}
       onClick={selecthandler}
     >
+      {errortext && <p className="formstep__error">{errortext}</p>}
+
       <div className="formstep__select-title-container">
         <div className="formstep__select-title ">
           {MainStore.category ? (

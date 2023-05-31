@@ -68,6 +68,8 @@ export const InteractivePlateControls = observer(() => {
           maxBar={MainStore.calculations.activityQuantityMax}
           currency="₽"
           firstTextCurrency="₽"
+          firstpreprice="от "
+          secondpreprice="до "
           price={MainStore.calculations.activityPrice}
           pieces={MainStore.calculations.activityQuantity}
           secondTextCurrency="действий"
@@ -78,12 +80,14 @@ export const InteractivePlateControls = observer(() => {
       </div>
 
       <InteractiveToggler
+        style={{display: 'none'}}
         title="Отчеты исполнителей"
         isActive={MainStore.calculations.reportsPriceIsActive}
         price={MainStore.calculations.REPORTS_PRICE}
         handler={MainStore.calculations.switchReportsPriceIsActive}
       />
       <InteractiveToggler
+        style={{display: 'none'}}
         title="Мониторинг позиций"
         isActive={MainStore.calculations.monitoringPriceIsActive}
         price={MainStore.calculations.MONITORING_PRICE}

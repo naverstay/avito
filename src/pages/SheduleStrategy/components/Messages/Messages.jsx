@@ -5,26 +5,18 @@ import { observer } from 'mobx-react';
 import { useEffect, useRef, useState } from 'react';
 
 export const Messages = observer(() => {
-  const radiobuttons = [
-    'Пришлите больше фото на WhatsApp +7 9XX XX XX',
-    'Где можно посмотреть?',
-    'Напишите мне в WhatsApp +7 9XX XX XX',
-    'Еще продаете?',
-    'У меня есть вопросы, позвоните мне на телефон +7 9XX XX XX',
-  ];
+
   function radiobuttonHandler(e) {
-    MainStore.strategy.setArrivedMessage(e.currentTarget.textContent);
+    const message = e.currentTarget.closest('.messages__radio').textContent;
+    MainStore.strategy.setArrivedMessage(message);
+
+    console.log(MainStore.strategy.arrivedMessage);
   }
 
   // Анимация раскрытия
   const buttonsref = useRef();
   const [buttonsStyle, setButtonsStyle] = useState({});
-
   useEffect(() => {
-    // Выбор первой радиокнопки при инициализации
-    document.querySelector('.messages__radio').click();
-
-    // Присвоение высоты
     setButtonsStyle({
       height: buttonsref.current.scrollHeight,
       marginTop: 25,
@@ -42,14 +34,13 @@ export const Messages = observer(() => {
         info="Чтобы отличить активность в чате от сервиса вы можете выбрать формат обращения. Отвечать на сообщения необходимо, тк объявления с быстрыми ответами могут иметь приемущество в выдаче."
       />
       <div className="messages__radiobuttons" ref={buttonsref} style={MainStore.strategy.isArrivedMessagesActive ? buttonsStyle : {}}>
-        {radiobuttons.map((i, key) => (
+        {MainStore.strategy.MESSAGES_WILL_COME.map((i, key) => (
           <label
-            onClick={radiobuttonHandler}
             className="messages__radio"
             key={key}
           >
-            <input type="radio" name="message" />
-            {i}
+            <input type="checkbox" name="message" onChange={radiobuttonHandler} checked={i.isActive} />
+            {i.title}
           </label>
         ))}
       </div>

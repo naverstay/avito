@@ -307,21 +307,21 @@ export default class Calculations {
   }
   setMonitoringPriceIsActive = (value) => { this.monitoringPriceIsActive = value }
 
-  seeNumberPriceIsActive = false;
+  seeNumberPriceIsActive = true;
   switchSeeNumberPriceIsActive = () => {
     this.seeNumberPriceIsActive = !this.seeNumberPriceIsActive;
     this._setTotalPrice();
   }
   setSeeNumberPriceIsActive = (value) => { this.seeNumberPriceIsActive = value }
 
-  seePhotoPriceIsActive = false;
+  seePhotoPriceIsActive = true;
   switchSeePhotoPriceIsActive = () => {
     this.seePhotoPriceIsActive = !this.seePhotoPriceIsActive;
     this._setTotalPrice();
   }
   setSeePhotoPriceIsActive = (value) => { this.seePhotoPriceIsActive = value }
 
-  showMapPriceIsActive = false;
+  showMapPriceIsActive = true;
   switchShowMapPriceIsActive = () => {
     this.showMapPriceIsActive = !this.showMapPriceIsActive;
     this._setTotalPrice();
@@ -331,9 +331,9 @@ export default class Calculations {
   _resetTogglers() {
     this.reportsPriceIsActive = false;
     this.monitoringPriceIsActive = false;
-    this.seeNumberPriceIsActive = false;
-    this.seePhotoPriceIsActive = false;
-    this.showMapPriceIsActive = false;
+    this.seeNumberPriceIsActive = true;
+    this.seePhotoPriceIsActive = true;
+    this.showMapPriceIsActive = true;
   }
 
   // Отзывы

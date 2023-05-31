@@ -1,4 +1,4 @@
-import TextInput from 'components/UI/TextInput/TextInput';
+import {TextInput} from 'components/UI/TextInput/TextInput';
 import './Login.scss';
 import Button from 'components/UI/Button/Button';
 import MainStore from 'stores/MainStore';

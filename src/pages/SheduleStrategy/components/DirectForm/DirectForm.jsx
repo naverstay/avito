@@ -1,4 +1,4 @@
-import TextInput from 'components/UI/TextInput/TextInput';
+import { TextInput } from 'components/UI/TextInput/TextInput';
 import './DirectForm.scss';
 import { useEffect, useRef, useState } from 'react';
 import { InteractiveMB } from 'components/InteractiveMB/InteractiveMB';
@@ -48,6 +48,8 @@ export const DirectForm = observer(() => {
             max={3000}
             minBar={MainStore.strategy.isExternalTrafficActive ? 1 : 0}
             maxBar={30}
+            firstpreprice="от "
+            secondpreprice="до "
             currency="₽"
             firstTextCurrency="₽ в месяц"
             price={MainStore.strategy.directionClicksPrice}
@@ -55,7 +57,7 @@ export const DirectForm = observer(() => {
             secondTextCurrency="кликов"
             handler={MainStore.strategy.setDirectClickQuantity}
             value={MainStore.strategy.directClickQuantity}
-            style={{maxWidth: 350}}
+            style={{ maxWidth: 350 }}
           />
         </div>
       </div>

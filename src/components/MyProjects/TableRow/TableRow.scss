@@ -117,12 +117,24 @@
 @keyframes stateping {
   50% { background-color: $lightgrey; }
 }
-.tablerow__refresh {
+.tablerow__iconbuttons {
+  display: flex;
+  align-items: center;
+  column-gap: 35px;
+}
+.tablerow__iconbutton {
   width: 31px;
   height: 31px;
-  background: center/contain url(~assets/images/refreshicon.svg);
+  background: center/contain no-repeat;
   transition: all .5s;
   &:hover {
     transform: rotate(180deg);
+  }
+
+  &._refresh {
+    background-image: url(~assets/images/refreshicon.svg);
+  }
+  &._cog {
+    background-image: url(~assets/images/cogicon.svg);
   }
 }

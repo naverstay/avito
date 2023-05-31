@@ -6,6 +6,7 @@
   border-radius: 10px;
   transition: all 0.4s;
   border: 2px solid $lightgrey;
+  position: relative;
 
   &._active {
     border-color: $yellow;
@@ -20,7 +21,7 @@
 }
 
 .formstep__select-title-container {
-  padding: 17px 28px;
+  padding: 14px 28px;
   display: flex;
   column-gap: 17px;
   justify-content: space-between;

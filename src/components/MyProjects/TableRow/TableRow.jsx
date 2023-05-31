@@ -57,7 +57,12 @@ export default function TableRow({ data, paidProjects = false }) {
           </div>
         }
 
-        {paidProjects && <div><button className="tablerow__refresh"></button></div>}
+        {paidProjects && 
+        <div className="tablerow__iconbuttons">
+          {data.placement === 'manual' && <Link to={`/projects/${data.title.replace(/\D/g, '')}`}><button className="tablerow__iconbutton _cog"></button></Link>}
+          <button className="tablerow__iconbutton _refresh"></button>
+        </div>
+        }
 
       </div>
       <div ref={ref} className="tablerow__additional" style={isActive ? additionalStyle : {}}>

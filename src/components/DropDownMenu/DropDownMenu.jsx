@@ -17,7 +17,6 @@ export default function DropDownMenu({ isActive }) {
       <Link to="/projects" className="dropdownmenu__link">Расходы</Link>
       <Link to="/projects" className="dropdownmenu__link">Добавить проект</Link>
       <Link to="/login" className="dropdownmenu__link">Настройки</Link>
-      <Link to="/projects" className="dropdownmenu__link">Настройки ручного режима</Link>
       <Link to="/login" className="dropdownmenu__link" onClick={() => { MainStore.setIsAuth(false) }}>Выход</Link>
     </div>
   );

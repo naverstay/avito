@@ -1,7 +1,6 @@
 import { observer } from 'mobx-react';
 import './ManualActivities.scss';
 import MainStore from 'stores/MainStore';
-import Button from 'components/UI/Button/Button';
 import hearticon from 'assets/images/hearticon.svg';
 import humanicon from 'assets/images/humanicon.svg';
 import staricon from 'assets/images/staricon.svg';
@@ -26,7 +25,6 @@ export const ManualActivities = observer(() => {
           <span className="manualactivity__text">Подписаться на&nbsp;продавца <img style={{ width: 16 }} src={staricon} alt='descr' /></span>
         </div>
       </div>
-      <Button title="Добавить неделю" classes={['outlined']} onClick={MainStore.strategy.addCalendar} />
     </div>
   );
 });

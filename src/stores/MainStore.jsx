@@ -16,20 +16,31 @@ class MainStore {
       isFormModeLogin: observable,
       setIsFormModeLogin: action,
 
+
       linkToAvitoAd: observable,
       setLinkToAvitoAd: action,
+      linkToAvitoAdError: observable,
+
       category: observable,
       setCategory: action,
+      categoryError: observable,
+
       searchPhrases: observable,
       addSearchPhrase: action,
       removeSearchPhrase: action,
       setSearchPhrases: action,
+      searchPhrasesError: observable,
+
       country: observable,
       setCountry: action,
+      countryError: observable,
+
       city: observable,
       setCity: action,
+      cityError: observable,
 
-      createProjectButtonIsDisable: observable,
+
+      checkValidation: action,
 
       _resetCity: action,
       _resetCountry: action,
@@ -57,70 +68,104 @@ class MainStore {
   linkToAvitoAd = '';
   setLinkToAvitoAd = (value) => {
     this.linkToAvitoAd = value;
-
-    this.checkValidation();
+    this._validateLinkToAvitoAd();
   };
-  _resetLinkToAvitoAd() { this.linkToAvitoAd = '' }
+  _resetLinkToAvitoAd() { this.linkToAvitoAd = ''; this.linkToAvitoAdError = '' }
+  linkToAvitoAdError = '';
+  _validateLinkToAvitoAd() {
+    if (!this.linkToAvitoAd.includes('avito.ru/')) {
+      this.linkToAvitoAdError = 'Введите правильную ссылку на объявление Авито';
+    } else {
+      this.linkToAvitoAdError = '';
+    }
+    return this.linkToAvitoAdError.length === 0;
+  }
 
   // Категория
   category = '';
   setCategory(value) {
     this.category = value;
     this.calculations.calculate();
-
-    this.checkValidation();
+    this._validateCategory();
   }
-  _resetCategory() { this.category = '' }
+  _resetCategory() { this.category = ''; this.categoryError = ''; }
+  categoryError = '';
+  _validateCategory() {
+    if (this.category.length === 0) {
+      this.categoryError = 'Добавьте категорию';
+    } else {
+      this.categoryError = '';
+    }
+    return this.categoryError.length === 0;
+  }
 
   // Поисковые фразы
   searchPhrases = [];
   addSearchPhrase(value) {
     this.searchPhrases.push(value);
     this.calculations.calculate();
-
-    this.checkValidation();
+    this._validateSearchPhrases();
   }
   removeSearchPhrase(removedPhrase) {
     this.searchPhrases = this.searchPhrases.filter(phrase => phrase !== removedPhrase);
     this.calculations.calculate();
-
-    this.checkValidation();
+    this._validateSearchPhrases();
   }
   setSearchPhrases(array) { this.searchPhrases = array }
-  _resetSearchPhrases() { this.searchPhrases = [] }
+  _resetSearchPhrases() { this.searchPhrases = []; this.searchPhrasesError = ''; }
+  searchPhrasesError = '';
+  _validateSearchPhrases() {
+    if (this.searchPhrases.length === 0) {
+      this.searchPhrasesError = 'Добавьте поисковую фразу';
+    } else {
+      this.searchPhrasesError = '';
+    }
+    return this.searchPhrasesError.length === 0;
+  }
 
   // Страна
-  country = '';
+  country = 'Россия';
   setCountry = (value) => {
     this.country = value;
-
-    this.checkValidation();
+    this._validateCountry();
   }
-  _resetCountry() { this.country = '' }
+  _resetCountry() { this.country = 'Россия'; this.countryError = ''; }
+  countryError = '';
+  _validateCountry() {
+    if (this.country.length === 0) {
+      this.countryError = 'Введите страну';
+    } else {
+      this.countryError = '';
+    }
+    return this.countryError.length === 0;
+  }
 
   // Город
   city = '';
   setCity = (value) => {
     this.city = value;
-
-    this.checkValidation();
+    this._validateCity();
   }
-  _resetCity() { this.city = '' }
+  _resetCity() { this.city = ''; this.cityError = ''; }
+  cityError = '';
+  _validateCity() {
+    if (this.city.length === 0) {
+      this.cityError = 'Введите город';
+    } else {
+      this.cityError = '';
+    }
+    return this.cityError.length === 0;
+  }
 
   // Проверка заполненных полей
-  createProjectButtonIsDisable = true;
   checkValidation() {
-    if (
-      this.linkToAvitoAd.length &&
-      this.category.length &&
-      this.searchPhrases.length &&
-      this.country.length &&
-      this.city.length
-    ) {
-      this.createProjectButtonIsDisable = false;
-    } else {
-      this.createProjectButtonIsDisable = true;
-    }
+    return [
+      this._validateLinkToAvitoAd(),
+      this._validateCategory(),
+      this._validateSearchPhrases(),
+      this._validateCountry(),
+      this._validateCity(),
+    ].every(i => i === true);
   }
 
   reset() {
@@ -130,7 +175,6 @@ class MainStore {
     this._resetLinkToAvitoAd();
     this._resetCategory();
 
-    this.checkValidation();
     this.calculations.reset();
   }
 }

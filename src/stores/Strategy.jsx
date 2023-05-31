@@ -20,8 +20,10 @@ export default class Strategy {
       isArrivedMessagesActive: observable,
       switchArrivedMessages: action,
       _setIsArrivedMessagesActive: action,
+      MESSAGES_WILL_COME: observable,
       arrivedMessage: observable,
       setArrivedMessage: action,
+      _resetArrivedMessage: action,
 
       isExternalTrafficActive: observable,
       switchExternalTraffic: action,
@@ -53,6 +55,14 @@ export default class Strategy {
       payButtonIsDisabled: observable,
     });
   }
+
+  MESSAGES_WILL_COME = [
+    {title: 'Пришлите больше фото на WhatsApp +7 9XX XX XX', isActive: true},
+    {title: 'Где можно посмотреть?', isActive: false},
+    {title: 'Напишите мне в WhatsApp +7 9XX XX XX', isActive: false},
+    {title: 'Еще продаете?', isActive: false},
+    {title: 'У меня есть вопросы, позвоните мне на телефон +7 9XX XX XX', isActive: false},
+  ];
 
   ACTIVITY_MAX_CELL_QUANTITY = [
     10, // favourites
@@ -87,8 +97,20 @@ export default class Strategy {
     this.isArrivedMessagesActive = !this.isArrivedMessagesActive;
   }
   _setIsArrivedMessagesActive(boolean) { this.isArrivedMessagesActive = boolean; }
-  arrivedMessage = '';
-  setArrivedMessage(value) { this.arrivedMessage = value }
+  arrivedMessage = [];
+  setArrivedMessage(value) {
+    const changedItem = this.MESSAGES_WILL_COME.find(i => i.title === value);
+    changedItem.isActive = !changedItem.isActive;
+
+    this.arrivedMessage = this.MESSAGES_WILL_COME.filter(i => i.isActive).map(i => i.title);
+  }
+  _resetArrivedMessage() { 
+    this.MESSAGES_WILL_COME.forEach((i, ind) => {
+      if(ind === 0) {i.isActive = true }
+      else { i.isActive = false }
+    });
+    this.arrivedMessage = this.MESSAGES_WILL_COME.filter(i => i.isActive).map(i => i.title); 
+  }
 
   isExternalTrafficActive = true;
   switchExternalTraffic = () => {
@@ -202,7 +224,7 @@ export default class Strategy {
     this.setPlacement('auto');
     this._setIsAutomaticActivityActive(false);
     this._setIsArrivedMessagesActive(true);
-    this.setArrivedMessage('Пришлите больше фото на WhatsApp +7 9XX XX XX');
+    this._resetArrivedMessage();
     this._setIsExternalTrafficActive(true);
     this.setDirectTitle({target: {value: ''}});
     this.setDirectDescription({target: {value: ''}});
