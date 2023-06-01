@@ -3,6 +3,9 @@ import linkIcon from 'assets/images/myprojlink.svg';
 import Button from 'components/UI/Button/Button';
 import { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import ShureModalStore from 'components/UI/ShureModal/ShureModalStore.jsx';
+import getCookie from 'utils/getCookie.js';
+import MyProjectsStore from '../MyProjectsStore.jsx';
 
 export default function TableRow({ data, paidProjects = false }) {
 
@@ -24,6 +27,15 @@ export default function TableRow({ data, paidProjects = false }) {
     navigator.clipboard.writeText(data.linkToAvitoAd);
     seIsCopied(true);
     setTimeout(() => { seIsCopied(false) }, 400);
+  }
+
+  function deleteProject() {
+    const projects = JSON.parse(getCookie("projects"));
+    const filteredProjects = projects.filter(i => i.title !== data.title);
+    
+    document.cookie = `projects=${JSON.stringify(filteredProjects)};path=/;max-age=31536000`;
+    MyProjectsStore.setProjects(filteredProjects);
+    console.log(MyProjectsStore.projects);
   }
 
   return (
@@ -50,16 +62,21 @@ export default function TableRow({ data, paidProjects = false }) {
         {paidProjects && <div className="_bold">{data.directClickQuantity ?? 0}</div>}
 
         {!paidProjects &&
-          <div>
+          <div style={{display:'flex',columnGap:30,alignItems:'center'}}>
             <Link to={`/projects/${data.title.replace(/\D/g, '')}`}>
-              <Button style={{ width: 166 }} classes={['small']} title="Далее" />
+              <Button classes={['small']} title="Далее" style={{padding:'0 20px'}} />
             </Link>
+            <button className="tablerow__iconbutton _delete" onClick={() => {
+              ShureModalStore.setText('Вы действительно хотите удалить проект?');
+              ShureModalStore.setOk( deleteProject );
+              ShureModalStore.setIsOpen(true)
+              }}></button>
           </div>
         }
 
         {paidProjects && 
         <div className="tablerow__iconbuttons">
-          {data.placement === 'manual' && <Link to={`/projects/${data.title.replace(/\D/g, '')}`}><button className="tablerow__iconbutton _cog"></button></Link>}
+          {data.placement === 'manual' && <Link to={`/projects/${data.title.replace(/\D/g, '')}/show`}><button className="tablerow__iconbutton _cog"></button></Link>}
           <button className="tablerow__iconbutton _refresh"></button>
         </div>
         }

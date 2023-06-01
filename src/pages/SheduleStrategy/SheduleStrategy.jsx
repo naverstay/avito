@@ -153,7 +153,6 @@ export const SheduleStrategy = observer(() => {
                         pieces={MainStore.calculations.activityQuantity}
                         secondTextCurrency='действий'
                         handler={interactiveMBhandler}
-                        // handler={MainStore.calculations.setActivityQuantity}
                         value={MainStore.calculations.activityQuantity}
                         style={{ maxWidth: "none" }}
                       />

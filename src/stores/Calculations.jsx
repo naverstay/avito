@@ -358,7 +358,12 @@ export default class Calculations {
     this._setMinActivityPrice();
     this._setMaxActivityPrice();
 
-    this.setActivityQuantity(this.activityQuantityMin);
+    // Установить на 51% видимости
+    this.setActivityQuantity(
+      Math.round(
+        (this.activityQuantityMax - this.activityQuantityMin) * 0.35 + this.activityQuantityMin
+      )
+    );
 
     // console.log('%cЛокальное хранилище', 'padding:5px 8px;background:#00ff0055;font-style:italic;');
     // console.log({

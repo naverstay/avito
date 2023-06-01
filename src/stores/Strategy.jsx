@@ -15,11 +15,11 @@ export default class Strategy {
 
       isAutomaticActivityActive: observable,
       switchAutomaticActivity: action,
-      _setIsAutomaticActivityActive: action,
+      setIsAutomaticActivityActive: action,
 
       isArrivedMessagesActive: observable,
       switchArrivedMessages: action,
-      _setIsArrivedMessagesActive: action,
+      setIsArrivedMessagesActive: action,
       MESSAGES_WILL_COME: observable,
       arrivedMessage: observable,
       setArrivedMessage: action,
@@ -27,7 +27,7 @@ export default class Strategy {
 
       isExternalTrafficActive: observable,
       switchExternalTraffic: action,
-      _setIsExternalTrafficActive: action,
+      setIsExternalTrafficActive: action,
       directTitle: observable,
       setDirectTitle: action,
       directDescription: observable,
@@ -45,6 +45,7 @@ export default class Strategy {
 
       calendars: observable,
       addCalendar: action,
+      setCalendars: action,
       resetCalendars: action,
 
       cellHandler: action,
@@ -90,13 +91,13 @@ export default class Strategy {
   switchAutomaticActivity = () => {
     this.isAutomaticActivityActive = !this.isAutomaticActivityActive;
   }
-  _setIsAutomaticActivityActive(boolean) { this.isAutomaticActivityActive = boolean }
+  setIsAutomaticActivityActive(boolean) { this.isAutomaticActivityActive = boolean }
 
   isArrivedMessagesActive = true;
   switchArrivedMessages = () => {
     this.isArrivedMessagesActive = !this.isArrivedMessagesActive;
   }
-  _setIsArrivedMessagesActive(boolean) { this.isArrivedMessagesActive = boolean; }
+  setIsArrivedMessagesActive(boolean) { this.isArrivedMessagesActive = boolean; }
   arrivedMessage = [];
   setArrivedMessage(value) {
     const changedItem = this.MESSAGES_WILL_COME.find(i => i.title === value);
@@ -119,7 +120,7 @@ export default class Strategy {
 
     this.checkValidation();
   }
-  _setIsExternalTrafficActive(boolean) { this.isExternalTrafficActive = boolean }
+  setIsExternalTrafficActive(boolean) { this.isExternalTrafficActive = boolean }
   directTitle = '';
   setDirectTitle = (e) => {
     this.directTitle = e.target.value;
@@ -165,6 +166,7 @@ export default class Strategy {
   addCalendar = () => {
     this.calendars.push({ week: copy(this.week), activitySumms: copy(this.activitySumms) });
   }
+  setCalendars(calendars) { this.calendars = calendars }
   resetCalendars() {
     this.calendars = [{ week: copy(this.week), activitySumms: copy(this.activitySumms) }];
   }
@@ -222,10 +224,10 @@ export default class Strategy {
   reset() {
     this.setProjectTitle('');
     this.setPlacement('auto');
-    this._setIsAutomaticActivityActive(false);
-    this._setIsArrivedMessagesActive(true);
+    this.setIsAutomaticActivityActive(false);
+    this.setIsArrivedMessagesActive(true);
     this._resetArrivedMessage();
-    this._setIsExternalTrafficActive(true);
+    this.setIsExternalTrafficActive(true);
     this.setDirectTitle({target: {value: ''}});
     this.setDirectDescription({target: {value: ''}});
     this.setDirectClickQuantity(7);

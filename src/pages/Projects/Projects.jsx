@@ -1,5 +1,5 @@
 import Answers from 'components/Answers/Answers';
-import MyProjects from 'components/MyProjects/MyProjects';
+import {MyProjects} from 'components/MyProjects/MyProjects';
 import { useEffect } from 'react';
 
 export default function Projects() {

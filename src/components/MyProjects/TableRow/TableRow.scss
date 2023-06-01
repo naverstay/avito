@@ -137,4 +137,9 @@
   &._cog {
     background-image: url(~assets/images/cogicon.svg);
   }
+  &._delete {
+    background-image: url(~assets/images/cross.svg);
+    width: 20px;
+    height: 20px;
+  }
 }
