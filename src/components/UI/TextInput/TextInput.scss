@@ -16,6 +16,7 @@
 
   & + .textinput {
     border: 2px solid $red;
+    &:focus { border-color: $red }
   }
 }
 

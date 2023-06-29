@@ -5,7 +5,7 @@ import MainStore from 'stores/MainStore';
 import { useState } from 'react';
 import { observer } from 'mobx-react';
 import Plate from 'components/UI/Plate/Plate';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 export const Login = observer(() => {
   const plateStyle = {
@@ -13,16 +13,61 @@ export const Login = observer(() => {
     margin: '0 auto',
     width: '614px',
   };
+  const navigate = useNavigate();
 
   const [logininput, setLogininput] = useState('');
   function logininputHandler(e) {
     setLogininput(e.target.value);
+    setLoginInputError('');
   }
+  const [loginInputError, setLoginInputError] = useState('');
 
   const [passwordinput, setPasswordinput] = useState('');
   function passwordinputHandler(e) {
     setPasswordinput(e.target.value);
+    setPasswordInputError('');
   }
+  const [passwordInputError, setPasswordInputError] = useState('');
+
+  function checkValidationAndFetch() {
+    setLoginInputError(logininput.length < 2 ? 'Неверный логин' : '');
+    setPasswordInputError(passwordinput.length < 8 ? 'Пароль должен быть не короче 8 символов' : '');
+
+    // Все поля валидны - отправка данных в зависимости от формы
+    if(logininput.length >= 2 && passwordinput.length >= 8) {
+      MainStore.isFormModeLogin ? login() : signup();
+    }
+  }
+
+  function signupAndFetch(address) {
+                               console.log(address + '...');
+    fetch(process.env.REACT_APP_BACKEND_ADDRESS + address, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json;charset=utf-8' },
+      body: JSON.stringify({ login: logininput, password: passwordinput })
+    })
+    .then(res => {
+                                console.log('first response');
+                                console.log(res);
+      if(res.ok) { 
+        return res.json();
+      } else { 
+        throw new Error();
+      } 
+    })
+    .then((objectWithJwt) => {
+                                console.log('parsed response');
+                                console.log(objectWithJwt);
+      document.cookie = `jwt=${objectWithJwt.jwt};path=/;max-age=31536000`
+      setTimeout(()=>{navigate('/')},2000);
+    })
+    .catch(e => console.log('Возникла ошибка на сервере'));
+  }
+  function signup() { signupAndFetch('/signup') }
+  function login() { signupAndFetch('/login') }
+
+
+
 
   return (
     <section className="login">
@@ -41,42 +86,36 @@ export const Login = observer(() => {
             value={logininput}
             onChange={logininputHandler}
             style={{ marginBottom: 30 }}
+            errortext={loginInputError}
           />
           <TextInput
             placeholder="Пароль"
             value={passwordinput}
             onChange={passwordinputHandler}
+            errortext={passwordInputError}
           />
-          <Link to={MainStore.isFormModeLogin && '/'}>
-            <Button
-              title={
-                MainStore.isFormModeLogin
-                  ? 'Войти в мой аккаунт'
-                  : 'Зарегистрироваться'
-              }
-              classes={['wide']}
-              style={{ margin: '40px 0 47px' }}
-              onClick={() => {
-                if (!MainStore.isFormModeLogin) {
-                  MainStore.setIsFormModeLogin(!MainStore.isFormModeLogin);
-                } else {
-                  MainStore.setIsAuth(true);
-                }
-              }}
-            />
-          </Link>
+          <Button
+            title={
+              MainStore.isFormModeLogin
+                ? 'Войти в мой аккаунт'
+                : 'Зарегистрироваться'
+            }
+            classes={['wide']}
+            style={{ margin: '40px 0 47px' }}
+            onClick={checkValidationAndFetch}
+          />
           <div className="form__text-container">
-            <div className="form__container">
+            {/* <div className="form__container">
               <p className="form__tg-text">
                 {MainStore.isFormModeLogin
                   ? 'Вход через социальную сеть:'
                   : 'Зарегистрироваться через:'}
               </p>
               <button className="form__tg">Telegram</button>
-            </div>
+            </div> */}
             {MainStore.isFormModeLogin && (
               <div className="form__container">
-                <button className="form__text-link">Забыли пароль?</button>
+                {/* <button className="form__text-link">Забыли пароль?</button> */}
                 <button
                   onClick={() => {
                     MainStore.setIsFormModeLogin(false);

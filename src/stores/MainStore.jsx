@@ -10,12 +10,8 @@ class MainStore {
     this.strategy = new Strategy(this);
 
     makeObservable(this, {
-      isAuth: observable,
-      setIsAuth: action,
-
       isFormModeLogin: observable,
       setIsFormModeLogin: action,
-
 
       linkToAvitoAd: observable,
       setLinkToAvitoAd: action,
@@ -49,12 +45,6 @@ class MainStore {
       _resetCategory: action,
       reset: action,
     });
-  }
-
-  // Залогинен ли пользователь
-  isAuth = true;
-  setIsAuth(bool) {
-    this.isAuth = bool;
   }
 
   // Тип формы

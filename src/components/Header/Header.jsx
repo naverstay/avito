@@ -5,6 +5,7 @@ import MainStore from 'stores/MainStore';
 import { Link, useLocation } from 'react-router-dom';
 import DropDownMenu from 'components/DropDownMenu/DropDownMenu';
 import { useEffect, useState } from 'react';
+import getCookie from 'utils/getCookie.js';
 
 export default function Header() {
   // Ссылки на страницы
@@ -23,6 +24,13 @@ export default function Header() {
   // Выпадающее меню
   const [dropDownMenuIsActive, setDropDownMenuIsActive] = useState(false);
   function openDropDownMenu() {
+    fetch(process.env.REACT_APP_BACKEND_ADDRESS + '/lk', {
+      headers: {
+        'Set-Cookie': 'Token=123',
+        // Authorization: 'Token=123',
+      },
+      credentials: 'include'
+    }).then(res => console.log(res));
     setDropDownMenuIsActive(true);
   }
   const closeDropDownMenu = () => {
@@ -34,7 +42,7 @@ export default function Header() {
         if (
           (!e.target.closest('.dropdownmenu') &&
             !e.target.closest('.header__user') &&
-            document.querySelector('.dropdownmenu').className.includes('_active')) ||
+            document.querySelector('.dropdownmenu')?.className.includes('_active')) ||
           e.target.closest('.dropdownmenu__link')
         ) {
           closeDropDownMenu();
@@ -75,9 +83,9 @@ export default function Header() {
             </a>
 
             <div className="header__auth-container">
-              {MainStore.isAuth ? (
+              {getCookie('jwt') ? (
                 <div className="header__user" onClick={openDropDownMenu}>
-                  <span>Илья</span>
+                  <span>Личный кабинет</span>
                   <DropDownMenu
                     isActive={dropDownMenuIsActive}
                     closeDropDownMenu={setDropDownMenuIsActive}
