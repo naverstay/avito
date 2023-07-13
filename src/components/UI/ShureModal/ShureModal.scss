@@ -17,9 +17,9 @@
 
 .shuremodal__plate {
   position: relative;
-  padding: 30px 15px 15px 30px;
+  padding: 15px;
   border-radius: 15px;
-  min-width: 500px;
+  width: 500px;
 
   transition: all 0.4s;
   transform: scale(0);
@@ -45,9 +45,8 @@
   width: 20px;
   height: 20px;
   background: center/contain url(~assets/images/cross.svg) no-repeat;
-  position: absolute;
-  top: 15px;
-  right: 15px;
+  float: right;
+  margin: 0 0 15px 15px;
 }
 
 // анимации

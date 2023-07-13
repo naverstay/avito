@@ -22,19 +22,36 @@ export default function TableRow({ data, paidProjects = false }) {
   }, []);
 
   // Копирование ссылки по клику на иконку
-  const [isCopied, seIsCopied] = useState(false);
+  const [isCopied, setIsCopied] = useState(false);
   function linkHandler() {
     navigator.clipboard.writeText(data.linkToAvitoAd);
-    seIsCopied(true);
-    setTimeout(() => { seIsCopied(false) }, 400);
+    setIsCopied(true);
+    setTimeout(() => { setIsCopied(false) }, 400);
   }
 
   function deleteProject() {
-    const projects = JSON.parse(getCookie("projects"));
-    const filteredProjects = projects.filter(i => i.title !== data.title);
-    
-    document.cookie = `projects=${JSON.stringify(filteredProjects)};path=/;max-age=31536000`;
-    MyProjectsStore.setProjects(filteredProjects);
+    // Локальное хранилище cookie
+    // const filteredProjects = MyProjectsStore.projects.filter(i => i.title !== data.title);
+    // document.cookie = `projects=${JSON.stringify(filteredProjects)};path=/;max-age=31536000`;
+    // MyProjectsStore.setProjects(filteredProjects);
+
+    // Серверное хранилище
+    fetch(process.env.REACT_APP_BACKEND_ADDRESS + `/projects/${data.id}`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: 'Bearer ' + getCookie('jwt'),
+      },
+    })
+    .then(res => {
+      if(res.ok) {
+        const filteredProjects = MyProjectsStore.projects.filter(i => i.id !== data.id);
+        MyProjectsStore.setProjects(filteredProjects);
+      } else {
+        throw new Error('Не удалось удалить проект');
+      }
+    })
+    .catch(e => console.log(e));
+
     console.log(MyProjectsStore.projects);
   }
 
@@ -63,14 +80,22 @@ export default function TableRow({ data, paidProjects = false }) {
 
         {!paidProjects &&
           <div style={{display:'flex',columnGap:30,alignItems:'center'}}>
-            <Link to={`/projects/${data.title.replace(/\D/g, '')}`}>
+
+            <Link 
+              // Локальное хранилище cookie
+              // to={`/projects/${data.title.replace(/\D/g, '')}`}
+
+              // Серверное хранилище
+              to={`/projects/${data.id}`}
+            >
               <Button classes={['small']} title="Далее" style={{padding:'0 20px'}} />
             </Link>
+
             <button className="tablerow__iconbutton _delete" onClick={() => {
               ShureModalStore.setText('Вы действительно хотите удалить проект?');
               ShureModalStore.setOk( deleteProject );
-              ShureModalStore.setIsOpen(true)
-              }}></button>
+              ShureModalStore.setIsOpen(true);
+            }}/>
           </div>
         }
 
@@ -85,7 +110,7 @@ export default function TableRow({ data, paidProjects = false }) {
       <div ref={ref} className="tablerow__additional" style={isActive ? additionalStyle : {}}>
         <div className="tablerow__additional-container _searchphrases">
           <p className="tablerow__additional-title">Поисковые фразы</p>
-          {data.searchPhrases.map((i, ind) =>
+          {data.searchPhrases.split(',').map((i, ind) =>
             <p className="tablerow__additional-text" key={ind}>{i}</p>
           )}
         </div>

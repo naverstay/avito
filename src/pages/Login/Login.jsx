@@ -59,7 +59,8 @@ export const Login = observer(() => {
                                 console.log('parsed response');
                                 console.log(objectWithJwt);
       document.cookie = `jwt=${objectWithJwt.jwt};path=/;max-age=31536000`
-      setTimeout(()=>{navigate('/')},2000);
+      navigate('/');
+      document.location.reload();
     })
     .catch(e => console.log('Возникла ошибка на сервере'));
   }

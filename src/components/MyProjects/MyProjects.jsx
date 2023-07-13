@@ -19,13 +19,33 @@ export const MyProjects = observer(() => {
 
   // Получение данных с сервера при первом рендеринге
   useEffect(() => {
-    if (getCookie("projects")) {
-      MyProjectsStore.setProjects(JSON.parse(getCookie("projects")));
-    }
-    if (getCookie("paidProjects")) {
-      MyProjectsStore.setPaidProjects(JSON.parse(getCookie("paidProjects")));
-    }
+
+    // Локальное хранилище cookie
+    // if (getCookie("projects")) {
+    //   MyProjectsStore.setProjects(JSON.parse(getCookie("projects")));
+    // }
+    // if (getCookie("paidProjects")) {
+    //   MyProjectsStore.setPaidProjects(JSON.parse(getCookie("paidProjects")));
+    // }
+
+    // Серверное хранилище
+    fetch(process.env.REACT_APP_BACKEND_ADDRESS + '/projects', {
+      headers: {
+        Authorization: 'Bearer ' + getCookie('jwt'),
+      },
+    })
+    .then(res => {
+      if(res.ok) {
+        return res.json();
+      } else {
+        throw new Error('Не удалось получить проекты');
+      }
+    })
+    .then(res => { MyProjectsStore.setProjects(res) })
+    .catch(e => console.log(e));
+
   }, []);
+
 
   return (
     <>

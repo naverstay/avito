@@ -15,12 +15,11 @@ import { ManualCalendar } from "./components/ManualCalendar/ManualCalendar";
 import { observer } from "mobx-react";
 import Button from 'components/UI/Button/Button';
 import copy from "utils/copy";
+import { ShureModal } from "components/UI/ShureModal/ShureModal.jsx";
 
 export const SheduleStrategy = observer(() => {
   // Прокрутка вверх страницы
-  useEffect(() => {
-    window.scroll(0, 0);
-  }, []);
+  useEffect(() => {  window.scroll(0, 0) }, []);
 
   const plateStyle = {
     padding: 60,
@@ -76,37 +75,75 @@ export const SheduleStrategy = observer(() => {
       },
     ]);
 
+    // Локальное хранилище cookie
+    // const projects = JSON.parse(getCookie("projects"));
+    // const data = projects.find((i) => i.title.replace(/\D/g, "") === projectId);
+    // if (data) {
+    //   setCurrentProject(data);
+    //   MainStore.strategy.setProjectTitle(data.title);
+
+    //   MainStore.setLinkToAvitoAd(data.linkToAvitoAd);
+    //   MainStore.setSearchPhrases(data.searchPhrases);
+    //   MainStore.setCountry(data.country);
+    //   MainStore.setCity(data.city);
+
+    //   MainStore.calculations.setReportsPriceIsActive(data.reportsPriceIsActive);
+    //   MainStore.calculations.setMonitoringPriceIsActive(
+    //     data.monitoringPriceIsActive
+    //   );
+    //   MainStore.calculations.setSeeNumberPriceIsActive(
+    //     data.seeNumberPriceIsActive
+    //   );
+    //   MainStore.calculations.setSeePhotoPriceIsActive(
+    //     data.seePhotoPriceIsActive
+    //   );
+    //   MainStore.calculations.setShowMapPriceIsActive(data.showMapPriceIsActive);
+    //   MainStore.calculations.setFeedbackQuantity(data.feedbackQuantity);
+
+    //   MainStore.setCategory(data.category);
+    //   MainStore.calculations.setActivityQuantity(data.activityQuantity);
+    // }
+
+    // Серверное хранилище
+    fetch(process.env.REACT_APP_BACKEND_ADDRESS + `/projects/${projectId}`, {
+      method: 'GET',
+      headers: {
+        Authorization: 'Bearer ' + getCookie('jwt'),
+      },
+    })
+    .then(res => {
+      if(res.ok) {
+        return res.json();
+      } else {
+        throw new Error('Не удалось получить проект');
+      }
+    })
+    .then(res => {
+      console.log(res);
+      if (res) {
+        setCurrentProject(res);
+        MainStore.strategy.setProjectTitle(res.title);
+
+        MainStore.setLinkToAvitoAd(res.linkToAvitoAd);
+        MainStore.setCategory(res.category);
+        MainStore.setSearchPhrases(res.searchPhrases.split(','));
+        MainStore.setCountry(res.country);
+        MainStore.setCity(res.city);
+
+        MainStore.calculations.setReportsPriceIsActive( !!+res.reportsPriceIsActive );
+        MainStore.calculations.setMonitoringPriceIsActive( !!+res.monitoringPriceIsActive );
+        MainStore.calculations.setSeeNumberPriceIsActive( !!+res.seeNumberPriceIsActive );
+        MainStore.calculations.setSeePhotoPriceIsActive( !!+res.seePhotoPriceIsActive );
+        MainStore.calculations.setShowMapPriceIsActive( !!+res.showMapPriceIsActive );
+        MainStore.calculations.setFeedbackQuantity( +res.feedbackQuantity );
+
+        MainStore.calculations.calculate();
+        MainStore.calculations.setActivityQuantity(res.activityQuantity);
+      }
+    })
+    .catch(e => console.log(e));
+
     
-    const projects = JSON.parse(getCookie("projects"));
-    const data = projects.find((i) => i.title.replace(/\D/g, "") === projectId);
-
-    if (data) {
-      setCurrentProject(data);
-      MainStore.strategy.setProjectTitle(data.title);
-
-      MainStore.setLinkToAvitoAd(data.linkToAvitoAd);
-      // MainStore.setCategory(data.category); - перемещен вниз для логики срабатывания
-      MainStore.setSearchPhrases(data.searchPhrases);
-      MainStore.setCountry(data.country);
-      MainStore.setCity(data.city);
-
-      MainStore.calculations.setReportsPriceIsActive(data.reportsPriceIsActive);
-      MainStore.calculations.setMonitoringPriceIsActive(
-        data.monitoringPriceIsActive
-      );
-      MainStore.calculations.setSeeNumberPriceIsActive(
-        data.seeNumberPriceIsActive
-      );
-      MainStore.calculations.setSeePhotoPriceIsActive(
-        data.seePhotoPriceIsActive
-      );
-      MainStore.calculations.setShowMapPriceIsActive(data.showMapPriceIsActive);
-      MainStore.calculations.setFeedbackQuantity(data.feedbackQuantity);
-
-      // setCategory вызывает calculate()
-      MainStore.setCategory(data.category);
-      MainStore.calculations.setActivityQuantity(data.activityQuantity);
-    }
   }, []);
 
   // Обработчик ползунка активностей
@@ -189,6 +226,8 @@ export const SheduleStrategy = observer(() => {
         </div>
       </section>
       <Answers />
+
+      <ShureModal />
     </>
   );
 });

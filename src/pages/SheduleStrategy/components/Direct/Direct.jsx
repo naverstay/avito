@@ -7,9 +7,13 @@ import { observer } from 'mobx-react';
 import { TotalPrice } from 'components/TotalPrice/TotalPrice';
 import Button from 'components/UI/Button/Button';
 import getCookie from 'utils/getCookie';
-import { Link } from 'react-router-dom';
+import ShureModalStore from 'components/UI/ShureModal/ShureModalStore.jsx';
+import { useNavigate, useParams } from 'react-router-dom';
 
 export const Direct = observer(() => {
+
+  const navigate = useNavigate();
+  const { id } = useParams();
 
   function createProject() {
     const projectData = {
@@ -35,38 +39,98 @@ export const Direct = observer(() => {
 
       // свойства от Стратегии размещения
       placement: MainStore.strategy.placement,
-      isAutomaticActivityActive: MainStore.strategy.isAutomaticActivityActive,
-      isArrivedMessagesActive: MainStore.strategy.isArrivedMessagesActive,
-      isExternalTrafficActive: MainStore.strategy.isExternalTrafficActive,
+      calendars: MainStore.strategy.calendars,
 
-      // TODO
+      isAutomaticActivityActive: MainStore.strategy.isAutomaticActivityActive,
+      
+      isArrivedMessagesActive: MainStore.strategy.isArrivedMessagesActive,
+      arrivedMessage: MainStore.strategy.arrivedMessage,
+      
+      isExternalTrafficActive: MainStore.strategy.isExternalTrafficActive,
+      directTitle: MainStore.strategy.directTitle,
+      directDescription: MainStore.strategy.directDescription,
+      directClickQuantity: MainStore.strategy.directClickQuantity,
+      // Начальное состояние
       state: 1,
     };
-    if (projectData.isArrivedMessagesActive) {
-      projectData.arrivedMessage = MainStore.strategy.arrivedMessage;
-    }
-    if (projectData.isExternalTrafficActive) {
-      projectData.directTitle = MainStore.strategy.directTitle;
-      projectData.directDescription = MainStore.strategy.directDescription;
-      projectData.directClickQuantity = MainStore.strategy.directClickQuantity;
-    }
-    if(projectData.placement === 'manual') {
-      projectData.calendars = MainStore.strategy.calendars;
-    }
 
+    // Локальное хранилище cookie
+    // // Добавление проекта в Активные после оплаты
+    // const paidProjects = getCookie('paidProjects') ? JSON.parse(getCookie('paidProjects')) : [];
+    // paidProjects.push(projectData);
+    // document.cookie = `paidProjects=${JSON.stringify(paidProjects)};path=/;max-age=31536000`;
+    // // Удаление проекта из Черновики
+    // let projects = JSON.parse(getCookie('projects'));
+    // projects = projects.filter(i => i.title !== projectData.title);
+    // document.cookie = `projects=${JSON.stringify(projects)};path=/;max-age=31536000`;
+    // navigate('/projects');
+    // MainStore.reset();
+    // MainStore.strategy.reset();
 
-    // Добавление проекта в Активные после оплаты
-    const paidProjects = getCookie('paidProjects') ? JSON.parse(getCookie('paidProjects')) : [];
-    paidProjects.push(projectData);
-    document.cookie = `paidProjects=${JSON.stringify(paidProjects)};path=/;max-age=31536000`;
-    // Удаление проекта из Черновики
-    let projects = JSON.parse(getCookie('projects'));
-    projects = projects.filter(i => i.title !== projectData.title);
-    document.cookie = `projects=${JSON.stringify(projects)};path=/;max-age=31536000`;
+    // Серверное хранилище
+    fetch(process.env.REACT_APP_BACKEND_ADDRESS + `/lk`, {
+      method: 'GET',
+      headers: {
+        Authorization: 'Bearer ' + getCookie('jwt'),
+      },
+    })
+    .then(res => {
+      if(res.ok) {
+        return res.json();
+      } else {
+        throw new Error('Не удалось получить баланс');
+      }
+    })
+    .then(res => {
+      // Проверка баланса
+      if(res.balance < MainStore.calculations.totalPrice) {
 
+        // Необходимо пополнить баланс
+        ShureModalStore.setText('Недостаточно средств. Необходимо пополнить баланс в личном кабинете');
+        ShureModalStore.setIsOpen(true)
 
-    MainStore.reset();
-    MainStore.strategy.reset();
+      } else {
+
+        // Баланса хватает для покупки
+        // Оплата
+        fetch(process.env.REACT_APP_BACKEND_ADDRESS + `/update`, {
+          method: 'POST',
+          headers: {
+            Authorization: 'Bearer ' + getCookie('jwt'),
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({balance: res.balance - MainStore.strategy.totalPrice})
+        })
+        .then(res => { 
+          if(res.ok) {
+
+            // Успешная оплата
+            fetch(process.env.REACT_APP_BACKEND_ADDRESS + `/projects/${id}`, {
+              method: 'PUT',
+              headers: {
+                Authorization: 'Bearer ' + getCookie('jwt'),
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(projectData),
+            })
+            .then(res => {
+              if (res.ok) {
+                navigate('/projects');
+                MainStore.reset();
+                MainStore.strategy.reset();
+              } else {
+                throw new Error('Не удалось отправить проект')
+              }
+            })
+
+          } else {
+            throw new Error('Не удалось произвести оплату')
+          }
+        })
+
+      }
+    })
+    .catch(e => console.log(e));
   }
 
   return (
@@ -81,9 +145,7 @@ export const Direct = observer(() => {
       <DirectForm />
       <div className="direct__total">
         <TotalPrice mode="left" totalPrice={MainStore.strategy.totalPrice} />
-        <Link to="/projects">
-          <Button title="Оплатить" classes={["wide"]} disabled={MainStore.strategy.payButtonIsDisabled} onClick={createProject} />
-        </Link>
+        <Button title="Оплатить" classes={["wide"]} disabled={MainStore.strategy.payButtonIsDisabled} onClick={createProject} />
       </div>
     </section>
   );

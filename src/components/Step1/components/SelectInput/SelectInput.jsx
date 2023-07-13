@@ -64,6 +64,7 @@ export default function SelectInput({errortext}) {
     } else if (e.target.className.includes('formstep__select-item')) {
       if (!MainStore.category) {
         MainStore.setCategory(e.target.textContent);
+        MainStore.calculations.calculateWith51Percent();
         const clone = structuredClone(categories);
         const changedObject = clone.find(
           (i) => i.title === e.target.textContent
@@ -74,6 +75,7 @@ export default function SelectInput({errortext}) {
       }
     } else if (e.target.className.includes('close')) {
       MainStore.setCategory('');
+      MainStore.calculations.calculateWith51Percent();
       const target = e.target.closest('.select__tag');
       const clone = structuredClone(categories);
       const changedObject = clone.find((i) => i.title === target.textContent);

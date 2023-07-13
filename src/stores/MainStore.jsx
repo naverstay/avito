@@ -75,7 +75,6 @@ class MainStore {
   category = '';
   setCategory(value) {
     this.category = value;
-    this.calculations.calculate();
     this._validateCategory();
   }
   _resetCategory() { this.category = ''; this.categoryError = ''; }
@@ -93,12 +92,10 @@ class MainStore {
   searchPhrases = [];
   addSearchPhrase(value) {
     this.searchPhrases.push(value);
-    this.calculations.calculate();
     this._validateSearchPhrases();
   }
   removeSearchPhrase(removedPhrase) {
     this.searchPhrases = this.searchPhrases.filter(phrase => phrase !== removedPhrase);
-    this.calculations.calculate();
     this._validateSearchPhrases();
   }
   setSearchPhrases(array) { this.searchPhrases = array }
@@ -159,11 +156,11 @@ class MainStore {
   }
 
   reset() {
-    this._resetCity();
-    this._resetCountry();
-    this._resetSearchPhrases();
     this._resetLinkToAvitoAd();
     this._resetCategory();
+    this._resetSearchPhrases();
+    this._resetCountry();
+    this._resetCity();
 
     this.calculations.reset();
   }

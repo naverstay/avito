@@ -17,6 +17,7 @@ export const Phrase = observer(() => {
   function addPhrase() {
     if (phrase.length > 0 && MainStore.searchPhrases.length < 4) {
       MainStore.addSearchPhrase(phrase);
+      MainStore.calculations.calculateWith51Percent();
       // очистка поля
       setPhrase('');
     }
@@ -26,6 +27,7 @@ export const Phrase = observer(() => {
     if (e.target.className.includes('close')) {
       const target = e.target.previousElementSibling;
       MainStore.removeSearchPhrase(target.textContent);
+      MainStore.calculations.calculateWith51Percent();
     }
   }
 

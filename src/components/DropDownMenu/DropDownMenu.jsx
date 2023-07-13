@@ -1,25 +1,28 @@
 import { Link } from 'react-router-dom';
 import './DropDownMenu.scss';
-import MainStore from 'stores/MainStore';
-import Button from 'components/UI/Button/Button';
+import md5 from 'md5';
+import DropDownMenuStore from './DropDownMenuStore.jsx';
+import { observer } from 'mobx-react';
 
-export default function DropDownMenu({ isActive }) {
+export const DropDownMenu = observer(() => {
   return (
-    <div className={"dropdownmenu" + (isActive ? " _active" : "")}>
+    <div className={"dropdownmenu" + (DropDownMenuStore.isActive ? " _active" : "")}>
+      <div className="dropdownmenu__close" onClick={DropDownMenuStore.close}></div>
       <div className="dropdownmenu__balance-container">
         <div className="dropdownmenu__balance">
           <p className="dropdownmenu__balance-text">Баланс</p>
-          <p className="dropdownmenu__balance-digit">7337 ₽</p>
+          <p className="dropdownmenu__balance-digit">{DropDownMenuStore.balance} ₽</p>
         </div>
-        <Button style={{ padding: '0 35px', fontSize: 14, lineHeight: '17px' }} title="Пополнить" classes={['small']} />
+        <a className="dropdownmenu__button" href={"https://auth.robokassa.ru/Merchant/Index.aspx?MerchantLogin=boostclickru&InvId=0&IsTest=1&Encoding=utf-8&OutSum=1&SignatureValue=" + md5('boostclickru:1:0:qwerty123')}>Пополнить</a>
       </div>
-      <Link to="/projects" className="dropdownmenu__link">Мои проекты</Link>
-      <Link to="/projects" className="dropdownmenu__link">Расходы</Link>
-      <Link to="/projects" className="dropdownmenu__link">Добавить проект</Link>
-      <Link to="/login" className="dropdownmenu__link">Настройки</Link>
-      <Link to="/login" className="dropdownmenu__link" onClick={() => { 
+      <Link to="/projects" className="dropdownmenu__link" onClick={DropDownMenuStore.close}>Мои проекты</Link>
+      <Link to="/projects" className="dropdownmenu__link" onClick={DropDownMenuStore.close}>Расходы</Link>
+      <Link to="/projects" className="dropdownmenu__link" onClick={DropDownMenuStore.close}>Добавить проект</Link>
+      <Link to="/login" className="dropdownmenu__link" onClick={DropDownMenuStore.close}>Настройки</Link>
+      <div className="dropdownmenu__link" onClick={() => { 
         document.cookie = 'jwt=;path=/;expires=-1';
-      }}>Выход</Link>
+        document.location.reload();
+      }}>Выход</div>
     </div>
   );
-}
+})

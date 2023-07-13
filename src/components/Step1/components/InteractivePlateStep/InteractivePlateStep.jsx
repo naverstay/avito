@@ -8,7 +8,7 @@ import Button from 'components/UI/Button/Button';
 import MainStore from 'stores/MainStore';
 import { observer } from 'mobx-react';
 import { useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import getCookie from 'utils/getCookie';
 
 export const InteractivePlateStep = observer(() => {
@@ -68,17 +68,37 @@ export const InteractivePlateStep = observer(() => {
 
       state: 'Ждёт оплаты',
     };
-    const projects = getCookie('projects') ? JSON.parse(getCookie('projects')) : [];
-    projects.push(projectData);
-    document.cookie = `projects=${JSON.stringify(projects)};path=/;max-age=31536000`;
 
-    MainStore.reset();
-    navigate('/projects');
+    // Локальное хранилище cookie
+    // const projects = getCookie('projects') ? JSON.parse(getCookie('projects')) : [];
+    // projects.push(projectData);
+    // document.cookie = `projects=${JSON.stringify(projects)};path=/;max-age=31536000`;
+    // MainStore.reset();
+    // navigate('/projects');
+
+    // Серверное хранилище
+    fetch(process.env.REACT_APP_BACKEND_ADDRESS + '/projects', {
+      method: 'POST',
+      headers: {
+        Authorization: 'Bearer ' + getCookie('jwt'),
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(projectData)
+    })
+    .then(res => { 
+      if(res.ok) {
+        console.log(res);
+        MainStore.reset();
+        navigate('/projects');
+      } else {
+        throw new Error('Не удалось записать проект')
+      }
+    })
+    .catch(e => console.log(e));
+
   }
 
-  useEffect(() => {
-    MainStore.reset();
-  }, []);
+  useEffect(() => { MainStore.reset() }, []);
 
   // Обработчики ввода
   function setLinkToAvitoAd(e) { MainStore.setLinkToAvitoAd(e.target.value) }

@@ -358,49 +358,52 @@ export default class Calculations {
     this._setMinActivityPrice();
     this._setMaxActivityPrice();
 
+    console.log('%cЛокальное хранилище', 'padding:5px 8px;background:#00ff0055;font-style:italic;');
+    console.log({
+      categoryMultiply: this.categoryMultiply,
+      searchPhrasesQuantity: this.searchPhrasesQuantity,
+      activityQuantityMin: this.activityQuantityMin,
+      activityQuantityMax: this.activityQuantityMax,
+      activityFavouritesCoeff: this.activityFavouritesCoeff,
+      activityMessagesCoeff: this.activityMessagesCoeff,
+      activitySubscribeCoeff: this.activitySubscribeCoeff,
+      minActivityFavourites: this.minActivityFavourites,
+      minActivityMessages: this.minActivityMessages,
+      minActivitySubscribe: this.minActivitySubscribe,
+      maxActivityFavourites: this.maxActivityFavourites,
+      maxActivityMessages: this.maxActivityMessages,
+      maxActivitySubscribe: this.maxActivitySubscribe,
+      minActivityPrice: this.minActivityPrice,
+      maxActivityPrice: this.maxActivityPrice,
+      activityPrice: this.activityPrice,
+      vision: this.vision,
+      barFavouritesWidth: this.barFavouritesWidth,
+      barMessagesWidth: this.barMessagesWidth,
+      barSubscribeWidth: this.barSubscribeWidth,
+      daysQuantity: this.daysQuantity,
+      reportsPriceIsActive: this.reportsPriceIsActive,
+      monitoringPriceIsActive: this.monitoringPriceIsActive,
+      seeNumberPriceIsActive: this.seeNumberPriceIsActive,
+      seePhotoPriceIsActive: this.seePhotoPriceIsActive,
+      showMapPriceIsActive: this.showMapPriceIsActive,
+      feedbackQuantity: this.feedbackQuantity,
+      feedbackTotalPrice: this.feedbackTotalPrice,
+      activityFavourites: this.activityFavourites,
+      activityMessages: this.activityMessages,
+      activitySubscribe: this.activitySubscribe,
+      activityQuantity: this.activityQuantity,
+      totalPrice: this.totalPrice,
+    });
+  }
+  calculateWith51Percent() {
+    this.calculate();
+    
     // Установить на 51% видимости
     this.setActivityQuantity(
       Math.round(
         (this.activityQuantityMax - this.activityQuantityMin) * 0.35 + this.activityQuantityMin
       )
     );
-
-    // console.log('%cЛокальное хранилище', 'padding:5px 8px;background:#00ff0055;font-style:italic;');
-    // console.log({
-    //   categoryMultiply: this.categoryMultiply,
-    //   searchPhrasesQuantity: this.searchPhrasesQuantity,
-    //   activityQuantityMin: this.activityQuantityMin,
-    //   activityQuantityMax: this.activityQuantityMax,
-    //   activityFavouritesCoeff: this.activityFavouritesCoeff,
-    //   activityMessagesCoeff: this.activityMessagesCoeff,
-    //   activitySubscribeCoeff: this.activitySubscribeCoeff,
-    //   minActivityFavourites: this.minActivityFavourites,
-    //   minActivityMessages: this.minActivityMessages,
-    //   minActivitySubscribe: this.minActivitySubscribe,
-    //   maxActivityFavourites: this.maxActivityFavourites,
-    //   maxActivityMessages: this.maxActivityMessages,
-    //   maxActivitySubscribe: this.maxActivitySubscribe,
-    //   minActivityPrice: this.minActivityPrice,
-    //   maxActivityPrice: this.maxActivityPrice,
-    //   activityPrice: this.activityPrice,
-    //   vision: this.vision,
-    //   barFavouritesWidth: this.barFavouritesWidth,
-    //   barMessagesWidth: this.barMessagesWidth,
-    //   barSubscribeWidth: this.barSubscribeWidth,
-    //   daysQuantity: this.daysQuantity,
-    //   reportsPriceIsActive: this.reportsPriceIsActive,
-    //   monitoringPriceIsActive: this.monitoringPriceIsActive,
-    //   seeNumberPriceIsActive: this.seeNumberPriceIsActive,
-    //   seePhotoPriceIsActive: this.seePhotoPriceIsActive,
-    //   showMapPriceIsActive: this.showMapPriceIsActive,
-    //   feedbackQuantity: this.feedbackQuantity,
-    //   feedbackTotalPrice: this.feedbackTotalPrice,
-    //   activityFavourites: this.activityFavourites,
-    //   activityMessages: this.activityMessages,
-    //   activitySubscribe: this.activitySubscribe,
-    //   activityQuantity: this.activityQuantity,
-    //   totalPrice: this.totalPrice,
-    // });
   }
 
   // Изменение ползунка активностей
@@ -409,7 +412,7 @@ export default class Calculations {
   activitySubscribe = null;
   activityQuantity = 0;
   setActivityQuantity = (value) => {
-    this.activityQuantity = value;
+    this.activityQuantity = +value;
 
     this._setActivityCoeff();
 
@@ -443,7 +446,7 @@ export default class Calculations {
   reset() {
     this._resetTogglers();
     this.setFeedbackQuantity(1);
-    this.calculate();
+    this.calculateWith51Percent();
   }
 
 }

@@ -18,6 +18,8 @@ export const ShureModal = observer(() => {
   return (
     <div className={"shuremodal" + (ShureModalStore.isOpen ? " _active" : "")}>
       <Plate className='shuremodal__plate'>
+        <button className='shuremodal__close' onClick={cancel}></button>
+
         <p className='shuremodal__text'>{ShureModalStore.text}</p>
         <div className='shuremodal__buttons'>
           <Button
@@ -28,7 +30,6 @@ export const ShureModal = observer(() => {
           <Button title='OK' classes={["small"]} onClick={ok} />
         </div>
 
-        <button className='shuremodal__close' onClick={cancel}></button>
       </Plate>
     </div>
   );

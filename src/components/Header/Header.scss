@@ -18,11 +18,13 @@
   width: 50px;
 }
 
+.header__user-container {
+  position: relative;
+}
 .header__user {
   display: flex;
   align-items: center;
   column-gap: 15px;
-  position: relative;
   cursor: pointer;
 
   &::after {

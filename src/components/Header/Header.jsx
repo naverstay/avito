@@ -3,11 +3,12 @@ import logo from 'assets/images/logo.svg';
 import Button from 'components/UI/Button/Button';
 import MainStore from 'stores/MainStore';
 import { Link, useLocation } from 'react-router-dom';
-import DropDownMenu from 'components/DropDownMenu/DropDownMenu';
-import { useEffect, useState } from 'react';
+import { DropDownMenu } from 'components/DropDownMenu/DropDownMenu';
 import getCookie from 'utils/getCookie.js';
+import DropDownMenuStore from 'components/DropDownMenu/DropDownMenuStore.jsx';
+import { observer } from 'mobx-react';
 
-export default function Header() {
+export const Header = observer(() => {
   // Ссылки на страницы
   const buttons = [
     {
@@ -20,36 +21,6 @@ export default function Header() {
     },
   ];
   const location = useLocation();
-
-  // Выпадающее меню
-  const [dropDownMenuIsActive, setDropDownMenuIsActive] = useState(false);
-  function openDropDownMenu() {
-    fetch(process.env.REACT_APP_BACKEND_ADDRESS + '/lk', {
-      headers: {
-        'Set-Cookie': 'Token=123',
-        // Authorization: 'Token=123',
-      },
-      credentials: 'include'
-    }).then(res => console.log(res));
-    setDropDownMenuIsActive(true);
-  }
-  const closeDropDownMenu = () => {
-    setDropDownMenuIsActive(false);
-  };
-  useEffect(() => {
-    if(document.querySelector('.dropdownmenu')) {
-      document.body.addEventListener('click', (e) => {
-        if (
-          (!e.target.closest('.dropdownmenu') &&
-            !e.target.closest('.header__user') &&
-            document.querySelector('.dropdownmenu')?.className.includes('_active')) ||
-          e.target.closest('.dropdownmenu__link')
-        ) {
-          closeDropDownMenu();
-        }
-      });
-    }
-  }, []);
 
   return (
     <header className="header">
@@ -84,12 +55,9 @@ export default function Header() {
 
             <div className="header__auth-container">
               {getCookie('jwt') ? (
-                <div className="header__user" onClick={openDropDownMenu}>
-                  <span>Личный кабинет</span>
-                  <DropDownMenu
-                    isActive={dropDownMenuIsActive}
-                    closeDropDownMenu={setDropDownMenuIsActive}
-                  />
+                <div className="header__user-container">
+                  <div className="header__user" onClick={DropDownMenuStore.open}>Личный кабинет</div>
+                  <DropDownMenu />
                 </div>
               ) : (
                 <>
@@ -119,4 +87,4 @@ export default function Header() {
       </div>
     </header>
   );
-}
+})
