@@ -57,12 +57,18 @@ export const MyProjects = observer(() => {
       </div>
 
       <Plate style={plateStyle}>
-        {MyProjectsStore.projects.length ? (
+        {/* Локальное хранилище cookie */}
+        {/* {MyProjectsStore.projects.length ? ( */}
+
+        {/* Серверное хранилище */}
+        {MyProjectsStore.projects.find(i => i.state.includes('Ждёт оплаты') ) ? (
           <div className='myprojects__table'>
             <TableHead />
-            {MyProjectsStore.projects.map((i, ind) => {
-              return <TableRow key={ind} data={i} />;
-            })}
+            {/* Локальное хранилище cookie */}
+            {/* {MyProjectsStore.projects.map((i, ind) => { */}
+
+            {/* Серверное хранилище */}
+            {MyProjectsStore.projects.filter(i => i.state.includes('Ждёт оплаты') ).map((i, ind) =>  <TableRow key={ind} data={i} /> )}
           </div>
         ) : (
           <p style={{ textAlign: "center", fontSize: 20, lineHeight: "1em" }}>
@@ -71,11 +77,20 @@ export const MyProjects = observer(() => {
         )}
       </Plate>
 
-      {MyProjectsStore.paidProjects.length > 0 && (
+
+      {/* Локальное хранилище cookie */}
+      {/* {MyProjectsStore.paidProjects.length > 0 && ( */}
+
+      {/* Серверное хранилище */}
+      {MyProjectsStore.projects.find(i => i.state.match(/\d/g)) && (
         <Plate style={plateStyle}>
           <div className='myprojects__table'>
             <TableHead paidProjects={true} />
-            {MyProjectsStore.paidProjects.map((i, ind) => {
+            {/* Локальное хранилище cookie */}
+            {/* {MyProjectsStore.paidProjects.map((i, ind) => { */}
+
+            {/* Серверное хранилище */}
+            {MyProjectsStore.projects.filter(i => i.state.match(/\d/g)).map((i, ind) => {
               return <TableRow key={ind} data={i} paidProjects={true} />;
             })}
           </div>
