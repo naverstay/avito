@@ -94,6 +94,7 @@ export const Login = observer(() => {
             value={passwordinput}
             onChange={passwordinputHandler}
             errortext={passwordInputError}
+            type="password"
           />
           <Button
             title={

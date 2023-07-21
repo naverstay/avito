@@ -8,13 +8,14 @@ export const TextInput = ({
   style = {},
   onKeyDown = () => {},
   errortext,
+  type = 'text',
 }) => {
   return (
     <div className="textinput__container" style={style}>
       {errortext && <p className="textinput__erorr">{errortext}</p>}
       <input
         maxLength={maxLength || 200}
-        type="text"
+        type={type}
         className="textinput"
         placeholder={placeholder}
         onChange={onChange}
