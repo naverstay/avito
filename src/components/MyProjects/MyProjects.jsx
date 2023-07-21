@@ -6,7 +6,6 @@ import TableHead from "./TableHead/TableHead";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import getCookie from "utils/getCookie";
-import { ShureModal } from "components/UI/ShureModal/ShureModal.jsx";
 import { observer } from "mobx-react";
 import MyProjectsStore from "./MyProjectsStore.jsx";
 
@@ -96,8 +95,6 @@ export const MyProjects = observer(() => {
           </div>
         </Plate>
       )}
-
-      <ShureModal />
     </>
   );
 })

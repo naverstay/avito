@@ -111,7 +111,7 @@ export default function TableRow({ data, paidProjects = false }) {
               <button className="tablerow__iconbutton _cog"/>
             </Link>
           }
-          <button className="tablerow__iconbutton _refresh"></button>
+          {/* <button className="tablerow__iconbutton _refresh"></button> */}
         </div>
         }
 

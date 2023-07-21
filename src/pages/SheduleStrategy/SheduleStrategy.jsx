@@ -15,7 +15,6 @@ import { ManualCalendar } from "./components/ManualCalendar/ManualCalendar";
 import { observer } from "mobx-react";
 import Button from 'components/UI/Button/Button';
 import copy from "utils/copy";
-import { ShureModal } from "components/UI/ShureModal/ShureModal.jsx";
 
 export const SheduleStrategy = observer(() => {
   // Прокрутка вверх страницы
@@ -226,8 +225,6 @@ export const SheduleStrategy = observer(() => {
         </div>
       </section>
       <Answers />
-
-      <ShureModal />
     </>
   );
 });

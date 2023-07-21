@@ -87,6 +87,7 @@ export const Direct = observer(() => {
 
         // Необходимо пополнить баланс
         ShureModalStore.setText('Недостаточно средств. Необходимо пополнить баланс в личном кабинете');
+        ShureModalStore.setOk();
         ShureModalStore.setIsOpen(true);
 
       } else {

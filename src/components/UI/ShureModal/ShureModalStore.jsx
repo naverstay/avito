@@ -28,7 +28,7 @@ class ShureModalStore {
   }
 
   ok = () => {};
-  setOk(func) {
+  setOk(func = function(){}) {
     this.ok = func;
   }
 

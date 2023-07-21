@@ -3,26 +3,35 @@ import Projects from "pages/Projects/Projects";
 import { Login } from "pages/Login/Login";
 import { observer } from "mobx-react";
 import { Services } from "pages/Services/Services";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { Header } from "components/Header/Header";
 import { SheduleStrategy } from "pages/SheduleStrategy/SheduleStrategy";
-import { SheduleStrategyShow } from "pages/SheduleStrategy/SheduleStrategyShow.jsx";
+import { SheduleStrategyShow } from "pages/SheduleStrategy/SheduleStrategyShow";
 import getCookie from "utils/getCookie.js";
+import { useEffect } from "react";
+import { ShureModal } from "components/UI/ShureModal/ShureModal";
+import ShureModalStore from "components/UI/ShureModal/ShureModalStore";
 
 export const App = observer(() => {
 
-  // fetch(process.env.REACT_APP_BACKEND_ADDRESS + `/update`, {
-  //         method: 'POST',
-  //         headers: {
-  //           Authorization: 'Bearer ' + getCookie('jwt'),
-  //           "Content-Type": "application/json",
-  //         },
-  //         body: JSON.stringify({balance: 3000})
-  //       })
+  // Окно подтверждения оплаты
+  const location = useLocation();
+  useEffect(() => {
+    if(location.hash === '#success') {
+      ShureModalStore.setText('Оплата прошло успешна!');
+      ShureModalStore.setOk();
+      ShureModalStore.setIsOpen(true);
+    } else if(location.hash === '#failed') {
+      ShureModalStore.setText('При совершении оплаты произошла ошибка. Попробуйте снова');
+      ShureModalStore.setOk();
+      ShureModalStore.setIsOpen(true);
+    }
+  }, [location]);
 
   return (
     <>
       <Header />
+
       <Routes>
         {getCookie('jwt') ? (
           <>
@@ -46,6 +55,8 @@ export const App = observer(() => {
 
         <Route path='*' element={<Login />} />
       </Routes>
+
+      <ShureModal />
     </>
   );
 });
