@@ -101,7 +101,16 @@ export default function TableRow({ data, paidProjects = false }) {
 
         {paidProjects && 
         <div className="tablerow__iconbuttons">
-          {data.placement === 'manual' && <Link to={`/projects/${data.title.replace(/\D/g, '')}/show`}><button className="tablerow__iconbutton _cog"></button></Link>}
+          {data.placement === 'manual' && 
+            // Локальное хранилище cookie
+            // <Link to={`/projects/${data.title.replace(/\D/g, '')}/show`}>
+
+            // Серверное хранилище
+            <Link to={`/projects/${data.id}/show`}>
+
+              <button className="tablerow__iconbutton _cog"/>
+            </Link>
+          }
           <button className="tablerow__iconbutton _refresh"></button>
         </div>
         }

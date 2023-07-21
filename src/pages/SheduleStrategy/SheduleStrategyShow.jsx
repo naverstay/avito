@@ -16,9 +16,7 @@ import { Link } from "react-router-dom";
 
 export const SheduleStrategyShow = observer(() => {
   // Прокрутка вверх страницы
-  useEffect(() => {
-    window.scroll(0, 0);
-  }, []);
+  useEffect(() => { window.scroll(0, 0) }, []);
 
   const plateStyle = {
     padding: 60,
@@ -28,52 +26,79 @@ export const SheduleStrategyShow = observer(() => {
   // Получение объекта с сервера, который будем редактировать (дополнять)
   const projectId = useParams().id;
   const [currentProject, setCurrentProject] = useState(null);
+
+  // Локальное хранилище cookie
+  // useEffect(() => {
+  //   const projects = JSON.parse(getCookie("paidProjects"));
+  //   const data = projects.find((i) => i.title.replace(/\D/g, "") === projectId);
+
+  //   if (data) {
+  //     setCurrentProject(data);
+  //     MainStore.strategy.setProjectTitle(data.title);
+
+  //     MainStore.setLinkToAvitoAd(data.linkToAvitoAd);
+  //     MainStore.setCategory(data.category);
+  //     MainStore.setSearchPhrases(data.searchPhrases);
+  //     MainStore.setCountry(data.country);
+  //     MainStore.setCity(data.city);
+
+  //     MainStore.calculations.setReportsPriceIsActive(data.reportsPriceIsActive);
+  //     MainStore.calculations.setMonitoringPriceIsActive(data.monitoringPriceIsActive);
+  //     MainStore.calculations.setSeeNumberPriceIsActive(data.seeNumberPriceIsActive);
+  //     MainStore.calculations.setSeePhotoPriceIsActive( data.seePhotoPriceIsActive);
+  //     MainStore.calculations.setShowMapPriceIsActive(data.showMapPriceIsActive);
+  //     MainStore.calculations.setFeedbackQuantity(data.feedbackQuantity);
+
+  //     MainStore.calculations.calculate();
+  //     MainStore.calculations.setActivityQuantity(data.activityQuantity);
+
+  //     MainStore.strategy.setCalendars(data.calendars);
+  //   }
+  // }, []);
+
+  // Серверное хранилище
   useEffect(() => {
-    const projects = JSON.parse(getCookie("paidProjects"));
-    const data = projects.find((i) => i.title.replace(/\D/g, "") === projectId);
+    fetch(process.env.REACT_APP_BACKEND_ADDRESS + `/projects/${projectId}`, {
+      method: 'GET',
+      headers: {
+        Authorization: 'Bearer ' + getCookie('jwt'),
+      },
+    })
+    .then(res => {
+      if(res.ok) {
+        return res.json();
+      } else {
+        throw new Error('Не удалось получить проект');
+      }
+    })
+    .then(res => {
+      console.log(res);
+      if (res) {
+        setCurrentProject(res);
+        MainStore.strategy.setProjectTitle(res.title);
 
-    if (data) {
-      setCurrentProject(data);
-      MainStore.strategy.setProjectTitle(data.title);
+        MainStore.setLinkToAvitoAd(res.linkToAvitoAd);
+        MainStore.setCategory(res.category);
+        MainStore.setSearchPhrases(res.searchPhrases.split(','));
+        MainStore.setCountry(res.country);
+        MainStore.setCity(res.city);
 
-      MainStore.setLinkToAvitoAd(data.linkToAvitoAd);
-      // MainStore.setCategory(data.category); - перемещен вниз для логики срабатывания
-      MainStore.setSearchPhrases(data.searchPhrases);
-      MainStore.setCountry(data.country);
-      MainStore.setCity(data.city);
+        MainStore.calculations.setReportsPriceIsActive( !!+res.reportsPriceIsActive );
+        MainStore.calculations.setMonitoringPriceIsActive( !!+res.monitoringPriceIsActive );
+        MainStore.calculations.setSeeNumberPriceIsActive( !!+res.seeNumberPriceIsActive );
+        MainStore.calculations.setSeePhotoPriceIsActive( !!+res.seePhotoPriceIsActive );
+        MainStore.calculations.setShowMapPriceIsActive( !!+res.showMapPriceIsActive );
+        MainStore.calculations.setFeedbackQuantity( +res.feedbackQuantity );
 
-      MainStore.calculations.setReportsPriceIsActive(data.reportsPriceIsActive);
-      MainStore.calculations.setMonitoringPriceIsActive(
-        data.monitoringPriceIsActive
-      );
-      MainStore.calculations.setSeeNumberPriceIsActive(
-        data.seeNumberPriceIsActive
-      );
-      MainStore.calculations.setSeePhotoPriceIsActive(
-        data.seePhotoPriceIsActive
-      );
-      MainStore.calculations.setShowMapPriceIsActive(data.showMapPriceIsActive);
-      MainStore.calculations.setFeedbackQuantity(data.feedbackQuantity);
+        MainStore.calculations.calculate();
+        MainStore.calculations.setActivityQuantity(res.activityQuantity);
 
-      // setCategory вызывает calculate()
-      MainStore.setCategory(data.category);
-      MainStore.calculations.setActivityQuantity(data.activityQuantity);
-
-      MainStore.strategy.setCalendars(data.calendars);
-    }
+        MainStore.strategy.setCalendars(JSON.parse(res.calendars));
+        MainStore.strategy.setDirectClickQuantity(res.directClickQuantity);
+      }
+    })
+    .catch(e => console.log(e));
   }, []);
-
-  // Обработчик ползунка активностей
-  // Прибавлять можно
-  // убавлять - все стирается
-  function interactiveMBhandler(value) {
-    // Уменьшаем ползунок
-    if (+value < +MainStore.calculations.activityQuantity) {
-      MainStore.strategy.resetCalendars();
-    }
-    MainStore.calculations.setActivityQuantity(value);
-    MainStore.strategy.setDirectClickQuantity();
-  }
 
   return (
     <>
@@ -84,7 +109,7 @@ export const SheduleStrategyShow = observer(() => {
           <Plate style={plateStyle}>
             {currentProject ? (
               <>
-                <div
+                {/* <div
                   className='projects__upper-container'
                   style={{ display: "flex", flexDirection: "row-reverse" }}
                 >
@@ -114,13 +139,12 @@ export const SheduleStrategyShow = observer(() => {
                     </p>
                     <FAQ text='В режиме "Ручной PRO" необходимо самостоятельно распределить весь пакет активностей по времени. Учитывайте при распределение активность вашей аудитории и покупку платных услуг на Авито.' />
                   </div>
-                </div>
+                </div> */}
 
                 <ManualActivities />
                 {MainStore.strategy.calendars.map((_, key) => (
                   <ManualCalendar key={key} id={key} />
                 ))}
-                {/* <Button title="Добавить неделю" classes={['outlined']} onClick={MainStore.strategy.addCalendar} style={{margin: '0 auto 40px'}} /> */}
 
                 <div className='direct__total'>
                   <TotalPrice
@@ -131,7 +155,6 @@ export const SheduleStrategyShow = observer(() => {
                     <Button
                       title='Закрыть'
                       classes={["wide"]}
-                      onClick={() => {}}
                     />
                   </Link>
                 </div>

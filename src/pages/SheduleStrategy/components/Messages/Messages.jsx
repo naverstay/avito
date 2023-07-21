@@ -9,8 +9,7 @@ export const Messages = observer(() => {
   function radiobuttonHandler(e) {
     const message = e.currentTarget.closest('.messages__radio').textContent;
     MainStore.strategy.setArrivedMessage(message);
-
-    console.log(MainStore.strategy.arrivedMessage);
+    // console.log(MainStore.strategy.arrivedMessage);
   }
 
   // Анимация раскрытия

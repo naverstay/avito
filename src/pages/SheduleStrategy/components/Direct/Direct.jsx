@@ -81,50 +81,50 @@ export const Direct = observer(() => {
         throw new Error('Не удалось получить баланс');
       }
     })
-    .then(res => {
+    .then(resBalance => {
       // Проверка баланса
-      if(res.balance < MainStore.calculations.totalPrice) {
+      if(resBalance.balance < MainStore.calculations.totalPrice) {
 
         // Необходимо пополнить баланс
         ShureModalStore.setText('Недостаточно средств. Необходимо пополнить баланс в личном кабинете');
-        ShureModalStore.setIsOpen(true)
+        ShureModalStore.setIsOpen(true);
 
       } else {
 
         // Баланса хватает для покупки
-        // Оплата
-        fetch(process.env.REACT_APP_BACKEND_ADDRESS + `/update`, {
-          method: 'POST',
+        // Отправка проекта
+        fetch(process.env.REACT_APP_BACKEND_ADDRESS + `/projects/${id}`, {
+          method: 'PUT',
           headers: {
             Authorization: 'Bearer ' + getCookie('jwt'),
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({balance: res.balance - MainStore.strategy.totalPrice})
+          body: JSON.stringify(projectData),
         })
-        .then(res => { 
-          if(res.ok) {
+        .then(resProject => {
+          if (resProject.ok) {
 
-            // Успешная оплата
-            fetch(process.env.REACT_APP_BACKEND_ADDRESS + `/projects/${id}`, {
-              method: 'PUT',
+            // Оплата
+            fetch(process.env.REACT_APP_BACKEND_ADDRESS + `/update`, {
+              method: 'POST',
               headers: {
                 Authorization: 'Bearer ' + getCookie('jwt'),
                 "Content-Type": "application/json",
               },
-              body: JSON.stringify(projectData),
+              body: JSON.stringify({balance: resBalance.balance - MainStore.strategy.totalPrice})
             })
-            .then(res => {
-              if (res.ok) {
+            .then(res => { 
+              if(res.ok) {
                 navigate('/projects');
                 MainStore.reset();
                 MainStore.strategy.reset();
               } else {
-                throw new Error('Не удалось отправить проект')
+                throw new Error('Не удалось произвести оплату')
               }
             })
 
           } else {
-            throw new Error('Не удалось произвести оплату')
+            throw new Error('Не удалось отправить проект')
           }
         })
 

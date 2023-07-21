@@ -96,6 +96,13 @@ export default class Strategy {
   isArrivedMessagesActive = true;
   switchArrivedMessages = () => {
     this.isArrivedMessagesActive = !this.isArrivedMessagesActive;
+
+    // При выключении все сообщения переключаются в isActive=false
+    if(!this.isArrivedMessagesActive) {
+      this.arrivedMessage = [];
+    } else {
+      this._resetArrivedMessage();
+    }
   }
   setIsArrivedMessagesActive(boolean) { this.isArrivedMessagesActive = boolean; }
   arrivedMessage = [];
