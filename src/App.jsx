@@ -33,27 +33,21 @@ export const App = observer(() => {
       <Header />
 
       <Routes>
-        {getCookie('jwt') ? (
-          <>
-            <Route path='/' element={<Services />} />
-            <Route path='/boostclick' element={<Services />} />
-            <Route path='/projects'>
-              <Route index element={<Projects />} />
-              <Route path=':id'>
-                <Route index element={<SheduleStrategy />} />
-                <Route path='show' element={<SheduleStrategyShow />} />
-              </Route>
+        <Route path='/' element={<Services />} />
+
+        {getCookie('jwt') && (
+          <Route path='/projects'>
+            <Route index element={<Projects />} />
+            <Route path=':id'>
+              <Route index element={<SheduleStrategy />} />
+              <Route path='show' element={<SheduleStrategyShow />} />
             </Route>
-          </>
-        ) : (
-          <>
-            <Route path='*' element={<Navigate to='/login' />} />
-          </>
+          </Route>
         )}
 
         <Route path='/login' element={<Login />} />
 
-        <Route path='*' element={<Login />} />
+        <Route path='*' element={<Navigate to='/' />} />
       </Routes>
 
       <ShureModal />

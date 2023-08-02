@@ -17,7 +17,7 @@ export const Header = observer(() => {
     },
     {
       title: 'Мои проекты',
-      link: '/projects',
+      link: getCookie('jwt') ? '/projects' : '/login',
     },
   ];
   const location = useLocation();
@@ -30,7 +30,7 @@ export const Header = observer(() => {
           location.pathname !== '/login' ? {} : { justifyContent: 'center' }
         }
       >
-        <a href="https://aggo.ru/">
+        <a href="/">
           <img src={logo} alt="logo" className="header__logo" />
         </a>
 
@@ -50,7 +50,7 @@ export const Header = observer(() => {
             ))}
 
             <a href="#answers" className="header__link">
-              Обучение
+              FAQ
             </a>
 
             <div className="header__auth-container">

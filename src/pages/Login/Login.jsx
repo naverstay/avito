@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { observer } from 'mobx-react';
 import Plate from 'components/UI/Plate/Plate';
 import { useNavigate } from 'react-router-dom';
+import ShureModalStore from 'components/UI/ShureModal/ShureModalStore';
 
 export const Login = observer(() => {
   const plateStyle = {
@@ -40,24 +41,29 @@ export const Login = observer(() => {
   }
 
   function signupAndFetch(address) {
-                               console.log(address + '...');
     fetch(process.env.REACT_APP_BACKEND_ADDRESS + address, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json;charset=utf-8' },
       body: JSON.stringify({ login: logininput, password: passwordinput })
     })
     .then(res => {
-                                console.log('first response');
-                                console.log(res);
       if(res.ok) { 
         return res.json();
       } else { 
+
+        // Неправильный логин или пароль
+        if(res.status === 405) {
+          ShureModalStore.setText('Неправильный логин или пароль. Попробуйте снова');
+          ShureModalStore.setOk();
+          ShureModalStore.setIsOpen(true);
+        }
+
         throw new Error();
       } 
     })
     .then((objectWithJwt) => {
-                                console.log('parsed response');
-                                console.log(objectWithJwt);
+                                // console.log('parsed response');
+                                // console.log(objectWithJwt);
       document.cookie = `jwt=${objectWithJwt.jwt};path=/;max-age=31536000`
       navigate('/');
       document.location.reload();

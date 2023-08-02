@@ -30,3 +30,11 @@
   @extend %text;
   max-width: 520px;
 }
+
+.main__list {
+  margin-top: 1em;
+  
+  li::before {
+    display: none;
+  }
+}

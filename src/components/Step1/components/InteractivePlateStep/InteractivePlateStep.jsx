@@ -45,6 +45,11 @@ export const InteractivePlateStep = observer(() => {
       return;
     }
 
+    // Пользователь незарегистрирован
+    if(!getCookie('jwt')) {
+      return navigate('/login');
+    }
+
     const projectData = {
       title: `Активность в Авито (№${Math.round(100000 + Math.random() * 899999)})`,
       linkToAvitoAd: MainStore.linkToAvitoAd,

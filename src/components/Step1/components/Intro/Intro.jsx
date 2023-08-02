@@ -56,12 +56,15 @@ export default function Intro() {
     <section className="main__intro">
       <div className="main__intro-text-container">
         <h1 className="main__title" onClick={money}>SEO продвижение на Авито</h1>
-        <p className="main__about">
-          UPTOUP - это платформа, позволяющая быстро и просто повысить отдачу от
-          ваших рекламных объявлений. Пользуйтесь платформой, чтобы
-          оптимизировать затраты на рекламу, всегда опережает своих конкурентов
-          и получать больше заявок с Авито
-        </p>
+        <div className="main__about">
+          <b>Boostclick поможет в работе с Авито:</b>
+          <ul className='main__list'>
+            <li>- повысит эффективность от ваших рекламных объявлений.</li>
+            <li>- увеличит просмотры объявлений</li>
+            <li>- оптимизирует затраты на рекламу</li>
+            <li>- поможет продвинуть по поисковым запросам в Авито</li>
+          </ul>
+        </div>
       </div>
 
       <Sound />
