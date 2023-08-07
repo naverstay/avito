@@ -1,7 +1,9 @@
 @import "./assets/fonts/fonts";
 @import "./utils";
+@import "./text";
 
 html {
+  overflow-x: hidden;
   scroll-behavior: smooth;
 }
 

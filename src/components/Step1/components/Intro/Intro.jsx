@@ -57,7 +57,7 @@ export default function Intro() {
       <div className="main__intro-text-container">
         <h1 className="main__title" onClick={money}>SEO продвижение на Авито</h1>
         <div className="main__about">
-          <b>Boostclick поможет в работе с Авито:</b>
+          <b className="tracking-1">Boostclick поможет в работе с Авито:</b>
           <ul className='main__list'>
             <li>- повысит эффективность от ваших рекламных объявлений.</li>
             <li>- увеличит просмотры объявлений</li>

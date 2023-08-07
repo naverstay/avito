@@ -1,7 +1,11 @@
 .interactive {
-  display: grid;
-  grid-gap: 34px;
-  grid-template-columns: 1fr 515px;
-  grid-template-areas: 'a b' 'c b';
-  grid-template-rows: auto 1fr;
+  display: flex;
+  flex-flow: column;
+  gap: 34px;
+
+  &_title {
+    font-size: 48px;
+    font-weight: 700;
+    line-height: 41px;
+  }
 }

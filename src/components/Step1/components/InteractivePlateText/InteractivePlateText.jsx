@@ -1,9 +1,11 @@
 import Plate from 'components/UI/Plate/Plate';
 import './InteractivePlateText.scss';
+import {InteractivePlateStep1} from "../InteractivePlateStep/InteractivePlateStep1";
 
 export default function InteractivePlateText() {
   const plateStyle = {
     padding: '25px 60px',
+    marginBottom: '76px',
     gridArea: 'a',
     width: '100%',
   };
@@ -23,6 +25,8 @@ export default function InteractivePlateText() {
           разместив ее в поле ниже
         </li>
       </ul>
+
+      <InteractivePlateStep1/>
     </Plate>
   );
 }

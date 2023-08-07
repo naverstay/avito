@@ -30,8 +30,8 @@ export const Header = observer(() => {
           location.pathname !== '/login' ? {} : { justifyContent: 'center' }
         }
       >
-        <a href="/">
-          <img src={logo} alt="logo" className="header__logo" />
+        <a href="/" className="header__logo">
+          <img src={logo} alt="logo" />
         </a>
 
         {location.pathname !== '/login' && (

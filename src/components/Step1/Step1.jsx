@@ -18,7 +18,7 @@ export default function Step1() {
     },
   ]);
   const togglerStyle = {
-    margin: '60px 0 100px',
+    margin: '40px 0 110px',
   };
 
   return (

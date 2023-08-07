@@ -10,12 +10,19 @@
 .header__inner {
   display: flex;
   align-items: center;
-  column-gap: 44px;
-  height: 80px;
+  column-gap: 46px;
+  height: 94px;
 }
 
 .header__logo {
   width: 192px;
+  margin-left: -10px;
+  margin-right: 30px;
+
+  img {
+    display: block;
+    width: 100%;
+  }
 }
 
 .header__user-container {

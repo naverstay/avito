@@ -7,7 +7,7 @@ export default function InteractiveToggler({ title, isActive, price, handler, st
       <Toggler isActive={isActive} handler={handler} />
       <p className="interactivetoggler__title">{title}</p>
       <p className="interactivetoggler__price">
-        {price !== 0 ? price + ' ₽' : 'Бесплатно'}
+        {price + ' ₽'}
       </p>
     </div>
   );

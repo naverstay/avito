@@ -1,11 +1,13 @@
 @import "src/utils";
 
 .answers {
-  padding-top: 100px;
+  padding-top: 0px;
   margin-bottom: 90px;
 }
 
 .answers__title {
   margin-bottom: 60px;
+  font-weight: 800;
   @extend %title;
 }
+
