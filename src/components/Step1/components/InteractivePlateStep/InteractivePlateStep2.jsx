@@ -227,7 +227,7 @@ export const InteractivePlateStep2 = observer(() => {
           barWidth={MainStore.calculations.barSubscribeWidth}
         />
 
-        <TotalPrice mode="left" totalPrice={MainStore.strategy.totalPrice}/>
+        <TotalPrice mode="left"/>
 
         <Button
           style={buttonStyle}
