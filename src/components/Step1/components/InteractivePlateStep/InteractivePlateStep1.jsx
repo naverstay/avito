@@ -7,11 +7,13 @@ import {Phrase} from '../Phrase/Phrase';
 import Button from 'components/UI/Button/Button';
 import MainStore from 'stores/MainStore';
 import {observer} from 'mobx-react';
-import {useEffect, useMemo} from 'react';
+import {useCallback, useEffect, useMemo, useRef} from 'react';
 import {useNavigate} from 'react-router-dom';
 import getCookie from 'utils/getCookie';
 
 export const InteractivePlateStep1 = observer(() => {
+  const refPlate = useRef();
+
   const plateStyle = {
     width: '100%',
     display: 'grid',
@@ -38,6 +40,23 @@ export const InteractivePlateStep1 = observer(() => {
 
   // Запись созданного проекта на сервер
   const navigate = useNavigate();
+
+  const gotoStep2 = useCallback(() => {
+
+    // Не прошли валидацию
+    if (!MainStore.checkStep1()) {
+      return;
+    }
+
+    // Пользователь незарегистрирован
+    if (!getCookie('jwt')) {
+      return navigate('/login');
+    }
+
+    if (refPlate?.current) {
+      window.scroll(0, refPlate.current.offsetTop + refPlate.current.offsetHeight);
+    }
+  }, [refPlate?.current]);
 
   function createProject() {
 
@@ -125,7 +144,7 @@ export const InteractivePlateStep1 = observer(() => {
   }
 
   return (
-    <div style={plateStyle}>
+    <div ref={refPlate} style={plateStyle}>
       <div className="formstep__col">
         <TextInput placeholder="Cсылка на объявление Авито, которое планируете продвигать"
                    value={MainStore.linkToAvitoAd}
@@ -157,7 +176,7 @@ export const InteractivePlateStep1 = observer(() => {
       <div className="formstep__control">
         <Button
           style={buttonStyle}
-          onClick={createProject}
+          onClick={gotoStep2}
           title={'К следующему шагу'}
           classes={['']}
           disabled={MainStore.createProjectButtonIsDisable}

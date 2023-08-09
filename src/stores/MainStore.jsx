@@ -145,6 +145,16 @@ class MainStore {
   }
 
   // Проверка заполненных полей
+  checkStep1() {
+    return [
+      this._validateLinkToAvitoAd(),
+      this._validateCategory(),
+      this._validateCountry(),
+      this._validateCity(),
+    ].every(i => i === true);
+  }
+
+  // Проверка заполненных полей
   checkValidation() {
     return [
       this._validateLinkToAvitoAd(),

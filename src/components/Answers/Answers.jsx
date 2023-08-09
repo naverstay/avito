@@ -134,10 +134,6 @@ export default function Answers() {
             <Accordion title={i.title} text={i.text} key={ind}/>
           ))}
         </Plate>
-
-        <Plate style={plateStyle}>
-          <Accordion title="Другие предложения по кредитным картам" text="Другие предложения по кредитным картам Другие предложения по кредитным картам"/>
-        </Plate>
       </div>
     </section>
   );

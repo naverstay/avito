@@ -160,7 +160,6 @@ export const InteractivePlateStep2 = observer(() => {
               secondTextCurrency="действий"
               handler={MainStore.calculations.setActivityQuantity}
               value={MainStore.calculations.activityQuantity}
-              total={'0'}
             />
           </div>
 
@@ -233,8 +232,8 @@ export const InteractivePlateStep2 = observer(() => {
         <Button
           style={buttonStyle}
           onClick={createProject}
-          title={'Создать проект'}
-          classes={['']}
+          title={"Создать проект"}
+          classes={[""]}
           disabled={MainStore.createProjectButtonIsDisable}
         />
       </div>

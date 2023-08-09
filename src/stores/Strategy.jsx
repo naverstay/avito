@@ -1,4 +1,4 @@
-import { action, makeObservable, observable } from "mobx";
+import {action, makeObservable, observable} from "mobx";
 import copy from "utils/copy";
 
 export default class Strategy {
@@ -53,7 +53,7 @@ export default class Strategy {
       activitySumms: observable,
 
 
-      payButtonIsDisabled: observable,
+      payButtonIsDisabled: observable
     });
   }
 
@@ -62,62 +62,77 @@ export default class Strategy {
     {title: 'Где можно посмотреть?', isActive: false},
     {title: 'Напишите мне в WhatsApp +7 9XX XX XX', isActive: false},
     {title: 'Еще продаете?', isActive: false},
-    {title: 'У меня есть вопросы, позвоните мне на телефон +7 9XX XX XX', isActive: false},
+    {title: 'У меня есть вопросы, позвоните мне на телефон +7 9XX XX XX', isActive: false}
   ];
 
   ACTIVITY_MAX_CELL_QUANTITY = [
     10, // favourites
     12, // messages
     5 // subscribe
-  ]
+  ];
 
-  DIRECTION_CLICK_PRICE = 100
+  DIRECTION_CLICK_PRICE = 100;
 
 
   // Название проекта
   projectTitle = '';
-  setProjectTitle = (value) => { this.projectTitle = value }
+  setProjectTitle = (value) => {
+    this.projectTitle = value;
+  };
 
 
   // Стратегия размещения
   placement = 'auto';
+
   setPlacement(value) {
     this.placement = value;
   }
 
 
-  // Тогглеры 
+  // Тогглеры
   isAutomaticActivityActive = false;
   switchAutomaticActivity = () => {
     this.isAutomaticActivityActive = !this.isAutomaticActivityActive;
+  };
+
+  setIsAutomaticActivityActive(boolean) {
+    this.isAutomaticActivityActive = boolean;
   }
-  setIsAutomaticActivityActive(boolean) { this.isAutomaticActivityActive = boolean }
 
   isArrivedMessagesActive = true;
   switchArrivedMessages = () => {
     this.isArrivedMessagesActive = !this.isArrivedMessagesActive;
 
     // При выключении все сообщения переключаются в isActive=false
-    if(!this.isArrivedMessagesActive) {
+    if (!this.isArrivedMessagesActive) {
       this.arrivedMessage = [];
     } else {
       this._resetArrivedMessage();
     }
+  };
+
+  setIsArrivedMessagesActive(boolean) {
+    this.isArrivedMessagesActive = boolean;
   }
-  setIsArrivedMessagesActive(boolean) { this.isArrivedMessagesActive = boolean; }
+
   arrivedMessage = [];
+
   setArrivedMessage(value) {
     const changedItem = this.MESSAGES_WILL_COME.find(i => i.title === value);
     changedItem.isActive = !changedItem.isActive;
 
     this.arrivedMessage = this.MESSAGES_WILL_COME.filter(i => i.isActive).map(i => i.title);
   }
-  _resetArrivedMessage() { 
+
+  _resetArrivedMessage() {
     this.MESSAGES_WILL_COME.forEach((i, ind) => {
-      if(ind === 0) {i.isActive = true }
-      else { i.isActive = false }
+      if (ind === 0) {
+        i.isActive = true;
+      } else {
+        i.isActive = false;
+      }
     });
-    this.arrivedMessage = this.MESSAGES_WILL_COME.filter(i => i.isActive).map(i => i.title); 
+    this.arrivedMessage = this.MESSAGES_WILL_COME.filter(i => i.isActive).map(i => i.title);
   }
 
   isExternalTrafficActive = true;
@@ -126,35 +141,38 @@ export default class Strategy {
     this.setDirectClickQuantity(this.isExternalTrafficActive ? 7 : 0);
 
     this.checkValidation();
+  };
+
+  setIsExternalTrafficActive(boolean) {
+    this.isExternalTrafficActive = boolean;
   }
-  setIsExternalTrafficActive(boolean) { this.isExternalTrafficActive = boolean }
+
   directTitle = '';
   setDirectTitle = (e) => {
     this.directTitle = e.target.value;
 
     this.checkValidation();
-  }
+  };
   directDescription = '';
   setDirectDescription = (e) => {
     this.directDescription = e.target.value;
 
     this.checkValidation();
-  }
+  };
   directClickQuantity = 7;
   setDirectClickQuantity = (value = this.directClickQuantity) => {
     this.directClickQuantity = value;
     this.setDirectionClicksPrice();
     this._setTotalPrice();
-  }
+  };
   directionClicksPrice = this.directClickQuantity * this.DIRECTION_CLICK_PRICE;
   setDirectionClicksPrice = () => {
     this.directionClicksPrice = this.directClickQuantity * this.DIRECTION_CLICK_PRICE;
-  }
+  };
   totalPrice = 12;
   _setTotalPrice() {
     this.totalPrice = this.mainStore.calculations.totalPrice + this.directionClicksPrice;
   }
-
 
 
   // Календарь
@@ -162,20 +180,24 @@ export default class Strategy {
   day = [
     Array(this.times.length).fill(0), // favourites
     Array(this.times.length).fill(0), // messages
-    Array(this.times.length).fill(0), // subscribe
-  ]
+    Array(this.times.length).fill(0) // subscribe
+  ];
   week = Array(7).fill(this.day);
 
   // [[0,1,2], [0,1,2], ... , [0,1,2]]
   activitySumms = Array(this.week.length).fill(Array(this.day.length).fill(0));
 
-  calendars = [{ week: copy(this.week), activitySumms: copy(this.activitySumms) }];
+  calendars = [{week: copy(this.week), activitySumms: copy(this.activitySumms)}];
   addCalendar = () => {
-    this.calendars.push({ week: copy(this.week), activitySumms: copy(this.activitySumms) });
+    this.calendars.push({week: copy(this.week), activitySumms: copy(this.activitySumms)});
+  };
+
+  setCalendars(calendars) {
+    this.calendars = calendars;
   }
-  setCalendars(calendars) { this.calendars = calendars }
+
   resetCalendars() {
-    this.calendars = [{ week: copy(this.week), activitySumms: copy(this.activitySumms) }];
+    this.calendars = [{week: copy(this.week), activitySumms: copy(this.activitySumms)}];
   }
 
 
@@ -190,7 +212,7 @@ export default class Strategy {
     const maxValue = this.ACTIVITY_MAX_CELL_QUANTITY[activitySerialNumber];
 
     // Сумма определенной активности favourites, messages или subscribe (по всем календарям)
-    const certainActivitySumm = this.calendars.reduce((acc, i) => (acc + i.activitySumms.reduce((acc, i) => (acc + i[activitySerialNumber]), 0)), 0)
+    const certainActivitySumm = this.calendars.reduce((acc, i) => (acc + i.activitySumms.reduce((acc, i) => (acc + i[activitySerialNumber]), 0)), 0);
     // const certainActivitySumm = activitySumms.reduce((acc, i) => (acc + i[activitySerialNumber]), 0);
 
     // Максимальное значение клеток определенной активности
@@ -210,9 +232,9 @@ export default class Strategy {
       day.forEach((activity, activityIndex) => {
         const activitySumm = activity.reduce((acc, cellValue) => (acc + cellValue), 0);
         activitySumms[dayIndex][activityIndex] = activitySumm;
-      })
+      });
     });
-  }
+  };
 
 
   payButtonIsDisabled = true;
@@ -226,7 +248,7 @@ export default class Strategy {
     } else {
       this.payButtonIsDisabled = false;
     }
-  }
+  };
 
   reset() {
     this.setProjectTitle('');

@@ -397,7 +397,7 @@ export default class Calculations {
   }
   calculateWith51Percent() {
     this.calculate();
-    
+
     // Установить на 51% видимости
     this.setActivityQuantity(
       Math.round(
